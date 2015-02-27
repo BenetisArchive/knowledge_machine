@@ -16,10 +16,14 @@
     ]
   },
   "browserify-shim": {
-    "react": "global:React"
+    "react": "global:React",
+    "react-router": "global:ReactRouter"
   },
   "dependencies": {
+    "install": "^0.1.8",
+    "npm": "^2.6.0",
     "react": "^0.12.2",
+    "react-router": "^0.12.4",
     "reactify": "^1.0.0"
   },
   "devDependencies": {

@@ -26,7 +26,7 @@ function build(watch) {
             cache: {},
             packageCache: {},
             fullPaths: true,
-            external: ['react']
+            external: ['react', 'router']
         }
     );
     if (watch) {

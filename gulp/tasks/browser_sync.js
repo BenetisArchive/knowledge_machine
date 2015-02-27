@@ -7,12 +7,13 @@ gulp.task('reload_browser', function() {
         //server: {
         //    baseDir: config.build
         //},
-        proxy: "localhost:3000",
-        open: false
+        proxy: "http://localhost:3000",
+        open: false,
+        port: 5000
     });
 });
 
 
 gulp.task('browser_sync', function(cb) {
-    run_sequence(['nodemon', 'reload_browser'], cb);
+    run_sequence([ 'reload_browser'], ['nodemon'], cb);
 });
