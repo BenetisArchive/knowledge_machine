@@ -1,15 +1,17 @@
 var React = require('react');
 var Router = require('react-router');
+var GameView = require('./game_view');
+var request = require('superagent');
+var RouteHandler = Router.RouteHandler;
+var Link = Router.Link;
+var Route = Router.Route;
 
-//
-//var GameView = require('./game_view');
-//
-//React.render(
-//    <GameView />,
-//    document.getElementById('view')
-//)
+var get = function (url, cb) {
+    request.get(url)
+        .set("Content-Type", "application/json")
+        .end(cb);
+};
 
-var $__0=      Router,Route=$__0.Route,RouteHandler=$__0.RouteHandler,Link=$__0.Link;
 
 var App = React.createClass({displayName: "App",
     render: function () {
@@ -65,22 +67,26 @@ var SignIn = React.createClass({displayName: "SignIn",
 });
 
 var ForgotPassword = React.createClass({displayName: "ForgotPassword",
+    getInitialState: function() {
+        return {users: ''};
+    },
+    componentWillMount: function() {
+        get("/users", function (res) {
+            this.setState({users : res.text})
+        }.bind(this));
+    },
     render: function () {
         return (
-            React.createElement("h3", null, "Forgot your password")
+            React.createElement("h3", null, this.state.users)
         );
     }
 });
 
 var routes = (
     React.createElement(Route, {handler: App}, 
-        React.createElement(Route, {handler: SignedOut}, 
             React.createElement(Route, {name: "signin", handler: SignIn}), 
-            React.createElement(Route, {name: "forgot-password", handler: ForgotPassword})
-        ), 
-        React.createElement(Route, {handler: SignedIn}, 
+            React.createElement(Route, {name: "forgot-password", handler: ForgotPassword}), 
             React.createElement(Route, {name: "home", handler: Home})
-        )
     )
 );
 
