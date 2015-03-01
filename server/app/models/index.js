@@ -1,8 +1,9 @@
+var config = require('../config/database.js');
 var fs = require('fs')
     , path = require('path')
     , Sequelize = require('sequelize')
     , lodash = require('lodash')
-    , sequelize = new Sequelize('knowledge_machine', 'root', null)
+    , sequelize = new Sequelize(config.database, config.username, config.password)
     , db = {}
 fs
     .readdirSync(__dirname)
