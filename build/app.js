@@ -2,7 +2,6 @@
 (function (global){
 var React = (typeof window !== "undefined" ? window.React : typeof global !== "undefined" ? global.React : null);
 var Router = (typeof window !== "undefined" ? window.ReactRouter : typeof global !== "undefined" ? global.ReactRouter : null);
-var GameView = require('./game_view');
 var request = require('superagent');
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
@@ -13,7 +12,6 @@ var get = function (url, cb) {
         .set("Content-Type", "application/json")
         .end(cb);
 };
-
 
 var App = React.createClass({displayName: "App",
     render: function () {
@@ -60,14 +58,6 @@ var SignedOut = React.createClass({displayName: "SignedOut",
     }
 });
 
-var SignUp = React.createClass({displayName: "SignUp",
-    render: function () {
-        return (
-            React.createElement("h2", null, "Sign up form")
-        );
-    }
-});
-
 var ForgotPassword = React.createClass({displayName: "ForgotPassword",
     getInitialState: function() {
         return {users: ''};
@@ -84,6 +74,8 @@ var ForgotPassword = React.createClass({displayName: "ForgotPassword",
     }
 });
 
+var SignUp = require('./users/components/signup_form/form');
+
 var routes = (
     React.createElement(Route, {handler: App}, 
             React.createElement(Route, {name: "signup", handler: SignUp}), 
@@ -98,15 +90,19 @@ Router.run(routes, function (Handler) {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./game_view":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/game_view/index.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/game_view/components/view.js":[function(require,module,exports){
+},{"./users/components/signup_form/form":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/signup_form/form.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/signup_form/form.js":[function(require,module,exports){
 (function (global){
 var React = (typeof window !== "undefined" ? window.React : typeof global !== "undefined" ? global.React : null);
 var Router = (typeof window !== "undefined" ? window.ReactRouter : typeof global !== "undefined" ? global.ReactRouter : null);
+var RouteHandler = Router.RouteHandler;
+var Link = Router.Link;
+var Route = Router.Route;
+
 module.exports = React.createClass({displayName: "exports",
-    render: function() {
+    render: function () {
         return (
             React.createElement("div", null, 
-                "Teisybe bus"
+                "Sign up form"
             )
         );
     }
@@ -114,11 +110,7 @@ module.exports = React.createClass({displayName: "exports",
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/game_view/index.js":[function(require,module,exports){
-module.exports = require('./components/view');
-
-
-},{"./components/view":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/game_view/components/view.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js":[function(require,module,exports){
+},{}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js":[function(require,module,exports){
 /**
  * Module dependencies.
  */

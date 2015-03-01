@@ -1,6 +1,5 @@
 var React = require('react');
 var Router = require('react-router');
-var GameView = require('./game_view');
 var request = require('superagent');
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
@@ -11,7 +10,6 @@ var get = function (url, cb) {
         .set("Content-Type", "application/json")
         .end(cb);
 };
-
 
 var App = React.createClass({displayName: "App",
     render: function () {
@@ -58,14 +56,6 @@ var SignedOut = React.createClass({displayName: "SignedOut",
     }
 });
 
-var SignUp = React.createClass({displayName: "SignUp",
-    render: function () {
-        return (
-            React.createElement("h2", null, "Sign up form")
-        );
-    }
-});
-
 var ForgotPassword = React.createClass({displayName: "ForgotPassword",
     getInitialState: function() {
         return {users: ''};
@@ -81,6 +71,8 @@ var ForgotPassword = React.createClass({displayName: "ForgotPassword",
         );
     }
 });
+
+var SignUp = require('./users/components/signup_form/form');
 
 var routes = (
     React.createElement(Route, {handler: App}, 
