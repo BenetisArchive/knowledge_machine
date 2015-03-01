@@ -10,7 +10,7 @@ var session      = require('express-session');
 
 var app = module.exports.app = exports.app = express();
 //Configuration
-// require('./config/passport')(passport); // pass passport for configuration
+require('./app/config/passport')(passport); // pass passport for configuration
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
