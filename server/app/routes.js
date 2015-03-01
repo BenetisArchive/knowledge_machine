@@ -3,7 +3,7 @@ var router = express.Router();
 
 module.exports = function(app, passport) {
     app.get('/', function(req, res) {
-        res.render('index')
+        res.render('index.html')
     });
 
     app.get('/signup', function(req, res) {
