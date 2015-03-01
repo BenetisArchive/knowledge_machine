@@ -4,14 +4,13 @@ var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 var Route = Router.Route;
 
-var Alert = require('react-bootstrap').Alert;
+var Input = require('react-bootstrap').Input;
 
 module.exports = React.createClass({
     render: function () {
         return (
             <div>
-                Test
-                <Alert/>
+                <Input type="text" label='Text' defaultValue="Enter text" />
             </div>
         );
     }

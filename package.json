@@ -16,8 +16,8 @@
     ]
   },
   "browserify-shim": {
-    "react": "global:React",
-    "react-router": "global:ReactRouter"
+    "react": "react",
+    "react-router": "react-router"
   },
   "dependencies": {
     "install": "^0.1.8",
