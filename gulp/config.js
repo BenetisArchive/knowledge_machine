@@ -3,7 +3,7 @@ module.exports = {
     compiled: './compiled',
     compiled_entry: './compiled/app.js',
     react_sources: './app/scripts/**/*.js*',
-    html_sources : './app/*.html',
+    html_sources : './server/views/index.html',
     sass_source : './app/styles/main.scss',
     sass_sources : './app/styles/**/*.scss',
     sass_dir: './app/styles',
