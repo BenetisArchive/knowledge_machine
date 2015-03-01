@@ -19,7 +19,7 @@ var App = React.createClass({displayName: "App",
             React.createElement("div", null, 
                 React.createElement("ol", null, 
                     React.createElement("li", null, React.createElement(Link, {to: "home"}, "Home")), 
-                    React.createElement("li", null, React.createElement(Link, {to: "signin"}, "Sign in")), 
+                    React.createElement("li", null, React.createElement(Link, {to: "signup"}, "Sign up")), 
                     React.createElement("li", null, React.createElement(Link, {to: "forgot-password"}, "Forgot Password"))
                 ), 
                 React.createElement(RouteHandler, null)
@@ -58,10 +58,10 @@ var SignedOut = React.createClass({displayName: "SignedOut",
     }
 });
 
-var SignIn = React.createClass({displayName: "SignIn",
+var SignUp = React.createClass({displayName: "SignUp",
     render: function () {
         return (
-            React.createElement("h3", null, "Please sign in.")
+            React.createElement("h2", null, "Sign up form")
         );
     }
 });
@@ -84,7 +84,7 @@ var ForgotPassword = React.createClass({displayName: "ForgotPassword",
 
 var routes = (
     React.createElement(Route, {handler: App}, 
-            React.createElement(Route, {name: "signin", handler: SignIn}), 
+            React.createElement(Route, {name: "signup", handler: SignUp}), 
             React.createElement(Route, {name: "forgot-password", handler: ForgotPassword}), 
             React.createElement(Route, {name: "home", handler: Home})
     )

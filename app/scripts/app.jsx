@@ -19,7 +19,7 @@ var App = React.createClass({
             <div>
                 <ol>
                     <li><Link to="home">Home</Link></li>
-                    <li><Link to="signin">Sign in</Link></li>
+                    <li><Link to="signup">Sign up</Link></li>
                     <li><Link to="forgot-password">Forgot Password</Link></li>
                 </ol>
                 <RouteHandler/>
@@ -58,10 +58,10 @@ var SignedOut = React.createClass({
     }
 });
 
-var SignIn = React.createClass({
+var SignUp = React.createClass({
     render: function () {
         return (
-            <h3>Please sign in.</h3>
+            <h2>Sign up form</h2>
         );
     }
 });
@@ -84,7 +84,7 @@ var ForgotPassword = React.createClass({
 
 var routes = (
     <Route handler={App}>
-            <Route name="signin" handler={SignIn}/>
+            <Route name="signup" handler={SignUp}/>
             <Route name="forgot-password" handler={ForgotPassword}/>
             <Route name="home" handler={Home}/>
     </Route>
