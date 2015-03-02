@@ -18,7 +18,7 @@ var App = React.createClass({displayName: "App",
             React.createElement("div", null, 
                 React.createElement("ol", null, 
                     React.createElement("li", null, React.createElement(Link, {to: "home"}, "Home")), 
-                    React.createElement("li", null, React.createElement(Link, {to: "invitation-form"}, "Invite users")), 
+                    React.createElement("li", null, React.createElement(Link, {to: "invite-users"}, "Invite users")), 
                     React.createElement("li", null, React.createElement(Link, {to: "forgot-password"}, "Forgot Password"))
                 ), 
                 React.createElement(RouteHandler, null)
@@ -73,11 +73,11 @@ var ForgotPassword = React.createClass({displayName: "ForgotPassword",
     }
 });
 
-var InvitationForm = require('./users/components/invitation_form/form');
+var InvitationForm = require('./users/components/invite_users/form');
 
 var routes = (
     React.createElement(Route, {handler: App}, 
-            React.createElement(Route, {name: "invitation-form", handler: InvitationForm}), 
+            React.createElement(Route, {name: "invite-users", handler: InvitationForm}), 
             React.createElement(Route, {name: "forgot-password", handler: ForgotPassword}), 
             React.createElement(Route, {name: "home", handler: Home})
     )
@@ -88,7 +88,7 @@ Router.run(routes, function (Handler) {
 });
 
 
-},{"./users/components/invitation_form/form":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invitation_form/form.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invitation_form/form.js":[function(require,module,exports){
+},{"./users/components/invite_users/form":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invite_users/form.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invite_users/form.js":[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;

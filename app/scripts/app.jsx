@@ -17,7 +17,7 @@ var App = React.createClass({
             <div>
                 <ol>
                     <li><Link to="home">Home</Link></li>
-                    <li><Link to="invitation-form">Invite users</Link></li>
+                    <li><Link to="invite-users">Invite users</Link></li>
                     <li><Link to="forgot-password">Forgot Password</Link></li>
                 </ol>
                 <RouteHandler/>
@@ -72,11 +72,11 @@ var ForgotPassword = React.createClass({
     }
 });
 
-var InvitationForm = require('./users/components/invitation_form/form');
+var InvitationForm = require('./users/components/invite_users/form');
 
 var routes = (
     <Route handler={App}>
-            <Route name="invitation-form" handler={InvitationForm}/>
+            <Route name="invite-users" handler={InvitationForm}/>
             <Route name="forgot-password" handler={ForgotPassword}/>
             <Route name="home" handler={Home}/>
     </Route>
