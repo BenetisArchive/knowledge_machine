@@ -18,7 +18,7 @@ var App = React.createClass({displayName: "App",
             React.createElement("div", null, 
                 React.createElement("ol", null, 
                     React.createElement("li", null, React.createElement(Link, {to: "home"}, "Home")), 
-                    React.createElement("li", null, React.createElement(Link, {to: "signup"}, "Sign up")), 
+                    React.createElement("li", null, React.createElement(Link, {to: "invitation-form"}, "Invite users")), 
                     React.createElement("li", null, React.createElement(Link, {to: "forgot-password"}, "Forgot Password"))
                 ), 
                 React.createElement(RouteHandler, null)
@@ -73,11 +73,11 @@ var ForgotPassword = React.createClass({displayName: "ForgotPassword",
     }
 });
 
-var SignUp = require('./users/components/signup_form/form');
+var InvitationForm = require('./users/components/invitation_form/form');
 
 var routes = (
     React.createElement(Route, {handler: App}, 
-            React.createElement(Route, {name: "signup", handler: SignUp}), 
+            React.createElement(Route, {name: "invitation-form", handler: InvitationForm}), 
             React.createElement(Route, {name: "forgot-password", handler: ForgotPassword}), 
             React.createElement(Route, {name: "home", handler: Home})
     )
@@ -88,7 +88,7 @@ Router.run(routes, function (Handler) {
 });
 
 
-},{"./users/components/signup_form/form":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/signup_form/form.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/signup_form/form.js":[function(require,module,exports){
+},{"./users/components/invitation_form/form":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invitation_form/form.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invitation_form/form.js":[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
@@ -100,8 +100,12 @@ var Input = require('react-bootstrap').Input;
 module.exports = React.createClass({displayName: "exports",
     render: function () {
         return (
-            React.createElement("div", null, 
-                React.createElement(Input, {type: "text", label: "Text", defaultValue: "Enter text"})
+            React.createElement("form", {className: "invitation_form form-horizontal col-xs-offset-1"}, 
+                React.createElement("h1", {className: "form_header col-xs-offset-2"}, "Users invitation"), 
+                React.createElement(Input, {type: "text", label: "E-mail", addonAfter: "@", 
+                    labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}), 
+                React.createElement(Input, {type: "submit", label: "", wrapperClassName: "col-xs-offset-2 col-xs-7"})
+
             )
         );
     }

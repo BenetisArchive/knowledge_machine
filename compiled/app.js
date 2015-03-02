@@ -17,7 +17,7 @@ var App = React.createClass({displayName: "App",
             React.createElement("div", null, 
                 React.createElement("ol", null, 
                     React.createElement("li", null, React.createElement(Link, {to: "home"}, "Home")), 
-                    React.createElement("li", null, React.createElement(Link, {to: "signup"}, "Sign up")), 
+                    React.createElement("li", null, React.createElement(Link, {to: "invitation-form"}, "Invite users")), 
                     React.createElement("li", null, React.createElement(Link, {to: "forgot-password"}, "Forgot Password"))
                 ), 
                 React.createElement(RouteHandler, null)
@@ -72,11 +72,11 @@ var ForgotPassword = React.createClass({displayName: "ForgotPassword",
     }
 });
 
-var SignUp = require('./users/components/signup_form/form');
+var InvitationForm = require('./users/components/invitation_form/form');
 
 var routes = (
     React.createElement(Route, {handler: App}, 
-            React.createElement(Route, {name: "signup", handler: SignUp}), 
+            React.createElement(Route, {name: "invitation-form", handler: InvitationForm}), 
             React.createElement(Route, {name: "forgot-password", handler: ForgotPassword}), 
             React.createElement(Route, {name: "home", handler: Home})
     )

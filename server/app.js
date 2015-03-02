@@ -36,16 +36,6 @@ app.use(flash());
 app.use("/public", express.static(__dirname + "/../build/"));
 require('./app/routes.js')(app, passport);
 
-
-//Stacktraces
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
-
 // error handlers
 
 // development error handler
