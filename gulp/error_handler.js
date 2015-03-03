@@ -1,6 +1,6 @@
 var notify = require('gulp-notify');
 
-module.exports = function () {
+module.exports = function (source) {
     "use strict";
     notify.onError({
         title: "Compiler error",

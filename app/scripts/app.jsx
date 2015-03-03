@@ -72,11 +72,11 @@ var ForgotPassword = React.createClass({
     }
 });
 
-var InvitationForm = require('./users/components/invite_users/form');
+var InviteUsersFormWrapper = require('./users/components/invite_users/form');
 
 var routes = (
     <Route handler={App}>
-            <Route name="invite-users" handler={InvitationForm}/>
+            <Route name="invite-users" handler={InviteUsersFormWrapper}/>
             <Route name="forgot-password" handler={ForgotPassword}/>
             <Route name="home" handler={Home}/>
     </Route>

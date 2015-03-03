@@ -73,11 +73,11 @@ var ForgotPassword = React.createClass({displayName: "ForgotPassword",
     }
 });
 
-var InvitationForm = require('./users/components/invite_users/form');
+var InviteUsersFormWrapper = require('./users/components/invite_users/form');
 
 var routes = (
     React.createElement(Route, {handler: App}, 
-            React.createElement(Route, {name: "invite-users", handler: InvitationForm}), 
+            React.createElement(Route, {name: "invite-users", handler: InviteUsersFormWrapper}), 
             React.createElement(Route, {name: "forgot-password", handler: ForgotPassword}), 
             React.createElement(Route, {name: "home", handler: Home})
     )
@@ -94,25 +94,58 @@ var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 var Route = Router.Route;
-
+var request = require('superagent');
 var Input = require('react-bootstrap').Input;
 
 module.exports = React.createClass({displayName: "exports",
+    onFormSubmit: function(data, callback) {
+        console.log('daf');
+        request
+            .post('/invite-users')
+            .send({data:data})
+            .end(function(error, res){
+                console.log(res);
+            });
+    },
     render: function () {
         return (
-            React.createElement("form", {className: "invitation_form form-horizontal col-xs-offset-1"}, 
+            React.createElement(Form, {onFormSubmit: this.onFormSubmit})
+        );
+    }
+});
+
+var Form = React.createClass({displayName: "Form",
+    getInitialState: function() {
+        return {
+            email: 'Initial email'
+        }
+    },
+    changeEmail: function(e) {
+        this.setState({
+            email: e.target.value
+        });
+    },
+    handleSubmit: function(e) {
+        e.preventDefault();
+        var email = this.state.email.trim();
+        this.props.onFormSubmit({
+            email: email
+        });
+    },
+    render: function () {
+        return (
+            React.createElement("form", {onSubmit:  this.handleSubmit, className: "invitation_form form-horizontal col-xs-offset-1"}, 
                 React.createElement("h1", {className: "form_header col-xs-offset-2"}, "Users invitation"), 
-                React.createElement(Input, {type: "text", label: "E-mail", addonAfter: "@", 
+                React.createElement(Input, {type: "text", label: "E-mail", value: this.state.email, onChange: this.changeEmail, addonAfter: "@", 
                     labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}), 
                 React.createElement(Input, {type: "submit", label: "", wrapperClassName: "col-xs-offset-2 col-xs-7"})
-
             )
         );
     }
 });
 
 
-},{"react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
+},{"react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
