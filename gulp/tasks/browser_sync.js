@@ -15,5 +15,6 @@ gulp.task('reload_browser', function() {
 
 
 gulp.task('browser_sync', function(cb) {
+    //run_sequence([ 'reload_browser'], ['nodemon'], cb);
     run_sequence([ 'reload_browser'], ['nodemon'], cb);
 });
