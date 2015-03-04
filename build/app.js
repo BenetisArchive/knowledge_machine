@@ -99,12 +99,11 @@ var Input = require('react-bootstrap').Input;
 
 module.exports = React.createClass({displayName: "exports",
     onFormSubmit: function(data, callback) {
-        console.log('daf');
         request
             .post('/invite-users')
             .send({data:data})
             .end(function(error, res){
-                console.log(res);
+                console.log(res.text);
             });
     },
     render: function () {
@@ -117,7 +116,15 @@ module.exports = React.createClass({displayName: "exports",
 var Form = React.createClass({displayName: "Form",
     getInitialState: function() {
         return {
-            email: 'Initial email'
+            email: 'test@a'
+        }
+    },
+    isEmailValid: function() {
+        return validateEmail(this.state.email) ? 'success' : 'error';
+
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
         }
     },
     changeEmail: function(e) {
@@ -136,8 +143,7 @@ var Form = React.createClass({displayName: "Form",
         return (
             React.createElement("form", {onSubmit:  this.handleSubmit, className: "invitation_form form-horizontal col-xs-offset-1"}, 
                 React.createElement("h1", {className: "form_header col-xs-offset-2"}, "Users invitation"), 
-                React.createElement(Input, {type: "text", label: "E-mail", value: this.state.email, onChange: this.changeEmail, addonAfter: "@", 
-                    labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}), 
+                React.createElement(Input, {type: "text", label: "E-mail", value: this.state.email, onChange: this.changeEmail, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7", bsStyle: this.isEmailValid(), hasFeedback: true}), 
                 React.createElement(Input, {type: "submit", label: "", wrapperClassName: "col-xs-offset-2 col-xs-7"})
             )
         );
