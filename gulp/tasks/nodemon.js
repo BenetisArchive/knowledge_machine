@@ -13,5 +13,5 @@ gulp.task('nodemon', function (cb) {
             called = true;
             cb();
         }
-    }).on('error', error_handler);
+    }).on('crash', error_handler);
 });

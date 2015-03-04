@@ -1,52 +1,70 @@
-var bcrypt   = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt-nodejs');
 
 "use strict";
 
-module.exports = function(sequelize, DataTypes) {
-    return sequelize.define("User", {
-        email: {
-            type: DataTypes.STRING,
-            validate:  {
-                isEmail: {
-                    msg: 'Invalid email'
-                }
+module.exports = function (sequelize, DataTypes) {
+    var User = sequelize.define("User", {
+            email: {
+                type: DataTypes.STRING,
+                validate: {
+                    isEmail: {
+                        msg: 'Invalid email'
+                    },
+                    isUnique: function (value, next) {
+                        var self = this;
+                        User.findOne({where: {email: value}})
+                            .then(function (user) {
+                                // reject if a different user wants to use the same email
+                                if (user && self.id !== user.id) {
+                                    return next('Email already in use!');
+                                }
+                                return next();
+                            })
+                            .catch(function (err) {
+                                return next(err);
+                            });
+                    }
+                },
+                allowNull: false
             },
-            allowNull: false
+            password: DataTypes.STRING,
+            invitation_hash: DataTypes.STRING,
+            registered: DataTypes.DATE
         },
-        password: DataTypes.STRING,
-        invitation_hash: DataTypes.STRING,
-        registered: DataTypes.DATE
-    }, {
-        classMethods: {
-            associate: function(models) {
-                //User.hasMany(models.Task)
-            },
-            generateHash: function(password) {
-                return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-            },
-            sendInvitation: function(email, done) {
-                this.create({
-                    email: email,
-                    password: '',
-                    invitation_hash: randomHash(),
-                    registered: new Date(1980, 6, 20)
-                }).then(function (user) {
-                    done('Successful invitation')
-                }).catch(function(error) {
-                    done(error.errors[0].message);
-                });
+        {
+            classMethods: {
+                associate: function (models) {
+                    //User.hasMany(models.Task)
+                }
+                ,
+                generateHash: function (password) {
+                    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+                }
+                ,
+                sendInvitation: function (email, done) {
+                    this.create({
+                        email: email,
+                        password: '',
+                        invitation_hash: randomHash(),
+                        registered: new Date(1980, 6, 20)
+                    }).then(function (user) {
+                        done('Successful invitation')
+                    }).catch(function (error) {
+                        done(error.errors[0].message);
+                    });
 
-                function randomHash()
-                {
-                    var text = "";
-                    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                    function randomHash() {
+                        var text = "";
+                        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-                    for( var i=0; i < 5; i++ )
-                        text += possible.charAt(Math.floor(Math.random() * possible.length));
+                        for (var i = 0; i < 5; i++)
+                            text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-                    return text;
+                        return text;
+                    }
                 }
             }
         }
-    });
+    );
+    return User;
 };
