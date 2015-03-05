@@ -89,7 +89,7 @@ Router.run(routes, function (Handler) {
 
 
 },{"./users/components/invite_users/form":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invite_users/form.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invite_users/form.js":[function(require,module,exports){
-"use strict"
+"use strict";
 var React = require('react');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
@@ -104,7 +104,7 @@ module.exports = React.createClass({displayName: "exports",
             .post('/invite-users')
             .send({data:data})
             .end(function(error, res){
-                console.log(res.text);
+                callback(JSON.parse(res.text));
             });
     },
     render: function () {
@@ -117,7 +117,8 @@ module.exports = React.createClass({displayName: "exports",
 var Form = React.createClass({displayName: "Form",
     getInitialState: function() {
         return {
-            email: 'test@a'
+            email: 'test@a',
+            error: ''
         }
     },
     isInputValid: function(input) {
@@ -127,7 +128,8 @@ var Form = React.createClass({displayName: "Form",
         }
 
         var inputValidation = {
-            email: isEmailValid(this.state.email)
+            email: isEmailValid(this.state.email),
+            error: true
         };
 
         return inputValidation[input];
@@ -150,17 +152,19 @@ var Form = React.createClass({displayName: "Form",
         var email = this.state.email.trim();
         this.props.onFormSubmit({
             email: email
-        });
+        }, function(result) {
+            this.setState({
+                error: result.msg
+            });
+        }.bind(this));
     },
     formHasErrors : function() {
         var inputErrors = _.map(this.state, function(inputValue, input) {
             return this.isInputValid(input)
         }.bind(this));
-
         var formIsValid = _.reduce(inputErrors, function(inputs, input) {
             return inputs && input;
         });
-
         return !formIsValid;
     },
     render: function () {
@@ -168,6 +172,7 @@ var Form = React.createClass({displayName: "Form",
             React.createElement("form", {onSubmit:  this.handleSubmit, className: "invitation_form form-horizontal col-xs-offset-1"}, 
                 React.createElement("h1", {className: "form_header col-xs-offset-2"}, "Users invitation"), 
                 React.createElement(Input, {type: "text", label: "E-mail", value: this.state.email, onChange: this.changeEmail, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7", bsStyle: this.getEmailValidation(), hasFeedback: true}), 
+                React.createElement(Input, {type: "static", wrapperClassName: "col-xs-offset-2 col-xs-7", value: this.state.error}), 
                 React.createElement(Input, {type: "submit", label: "", wrapperClassName: "col-xs-offset-2 col-xs-7", disabled:  this.formHasErrors() })
             )
         );
