@@ -1,9 +1,5 @@
 "use strict";
 var React = require('react');
-var Router = require('react-router');
-var RouteHandler = Router.RouteHandler;
-var Link = Router.Link;
-var Route = Router.Route;
 var request = require('superagent');
 var Input = require('react-bootstrap').Input;
 var _ = require('lodash');
@@ -25,25 +21,21 @@ module.exports = React.createClass({
 });
 
 var Form = React.createClass({
-    inputsToValidate: ['email'],
     getInitialState: function() {
         return {
-            email: 'test@a',
+            email: 'test@a.com',
             role: '1',
             error: ''
         }
     },
-    changeEmail: function(e) {
-        this.setState({
-            email: e.target.value
-        });
-    },
-    changeRole: function(e) {
-        this.setState({
-            role: e.target.value
-        })
+    handleInputChange: function(e) {
+        var nextState = {};
+        nextState[e.target.name] = e.target.value;
+        this.setState(nextState);
     },
     isInputValid: function(input) {
+        var inputsToValidate = ['email'];
+
         function isEmailValid(email) {
             var re = /\S+@\S+\.\S+/;
             return re.test(email);
@@ -53,7 +45,7 @@ var Form = React.createClass({
             email: isEmailValid(this.state.email)
         };
 
-        return _.indexOf(this.inputsToValidate, input) === -1
+        return _.indexOf(inputsToValidate, input) === -1
                 ? true //Input does not need to be validated
                 : inputValidation[input];
     },
@@ -91,8 +83,8 @@ var Form = React.createClass({
         return (
             <form onSubmit={ this.handleSubmit } className="invitation_form form-horizontal col-xs-offset-1">
                 <h1 className="form_header col-xs-offset-2">Users invitation</h1>
-                <Input type="text" label="E-mail" value={this.state.email} onChange={this.changeEmail} labelClassName="col-xs-2" wrapperClassName="col-xs-7" bsStyle={this.getEmailValidationState()} hasFeedback />
-                <Input type="select" label='User role' defaultValue="1" onChange={this.changeRole} labelClassName="col-xs-2" wrapperClassName="col-xs-7" >
+                <Input type="text" name ="email" label="E-mail" value={this.state.email} onChange={this.handleInputChange} labelClassName="col-xs-2" wrapperClassName="col-xs-7" bsStyle={this.getEmailValidationState()} hasFeedback />
+                <Input type="select" name ="role" label='User role' defaultValue="1" onChange={this.handleInputChange} labelClassName="col-xs-2" wrapperClassName="col-xs-7" >
                     <option value="1">Student</option>
                     <option value="2">Lecturer</option>
                     <option value="3">Administrator</option>

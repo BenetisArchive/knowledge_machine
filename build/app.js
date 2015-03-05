@@ -116,25 +116,21 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 var Form = React.createClass({displayName: "Form",
-    inputsToValidate: ['email'],
     getInitialState: function() {
         return {
-            email: 'test@a',
+            email: 'test@a.com',
             role: '1',
             error: ''
         }
     },
-    changeEmail: function(e) {
-        this.setState({
-            email: e.target.value
-        });
-    },
-    changeRole: function(e) {
-        this.setState({
-            role: e.target.value
-        })
+    handleInputChange: function(e) {
+        var nextState = {};
+        nextState[e.target.name] = e.target.value;
+        this.setState(nextState);
     },
     isInputValid: function(input) {
+        var inputsToValidate = ['email'];
+
         function isEmailValid(email) {
             var re = /\S+@\S+\.\S+/;
             return re.test(email);
@@ -144,7 +140,7 @@ var Form = React.createClass({displayName: "Form",
             email: isEmailValid(this.state.email)
         };
 
-        return _.indexOf(this.inputsToValidate, input) === -1
+        return _.indexOf(inputsToValidate, input) === -1
                 ? true //Input does not need to be validated
                 : inputValidation[input];
     },
@@ -182,8 +178,8 @@ var Form = React.createClass({displayName: "Form",
         return (
             React.createElement("form", {onSubmit:  this.handleSubmit, className: "invitation_form form-horizontal col-xs-offset-1"}, 
                 React.createElement("h1", {className: "form_header col-xs-offset-2"}, "Users invitation"), 
-                React.createElement(Input, {type: "text", label: "E-mail", value: this.state.email, onChange: this.changeEmail, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7", bsStyle: this.getEmailValidationState(), hasFeedback: true}), 
-                React.createElement(Input, {type: "select", label: "User role", defaultValue: "1", onChange: this.changeRole, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}, 
+                React.createElement(Input, {type: "text", name: "email", label: "E-mail", value: this.state.email, onChange: this.handleInputChange, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7", bsStyle: this.getEmailValidationState(), hasFeedback: true}), 
+                React.createElement(Input, {type: "select", name: "role", label: "User role", defaultValue: "1", onChange: this.handleInputChange, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}, 
                     React.createElement("option", {value: "1"}, "Student"), 
                     React.createElement("option", {value: "2"}, "Lecturer"), 
                     React.createElement("option", {value: "3"}, "Administrator")
