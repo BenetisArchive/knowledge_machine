@@ -48,9 +48,15 @@ module.exports = function (sequelize, DataTypes) {
                         invitation_hash: randomHash(),
                         registered: new Date(1980, 6, 20)
                     }).then(function (user) {
-                        done('Successful invitation')
+                        done({
+                                type: 'success',
+                                msg: 'Successful invitation'
+                        })
                     }).catch(function (error) {
-                        done(error.errors[0].message);
+                        done({
+                                type: 'error',
+                                msg: error.errors[0].message
+                        });
                     });
 
                     function randomHash() {

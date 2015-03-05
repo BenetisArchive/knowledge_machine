@@ -19,6 +19,7 @@ module.exports = function (app) {
         res.send({error: 'yeeeeee'})
     });
 
+    //Returns {type: '(error, success)', msg: '' }
     app.post('/invite-users', function (req, res) {
         models.User.sendInvitation(req.body.data.email , function(result) {
             res.send(result);
