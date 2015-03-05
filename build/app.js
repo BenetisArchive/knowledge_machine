@@ -98,7 +98,8 @@ var Route = Router.Route;
 var request = require('superagent');
 var Input = require('react-bootstrap').Input;
 var _ = require('lodash');
-//TODO: refactor for less code
+//TODO: refactor for less code for validation/submition (maybe new component for general use)
+//TODO: add new button to clear form
 module.exports = React.createClass({displayName: "exports",
     onFormSubmit: function(data, callback) {
         request
