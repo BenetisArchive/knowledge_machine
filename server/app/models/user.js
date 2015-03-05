@@ -29,7 +29,8 @@ module.exports = function (sequelize, DataTypes) {
             },
             password: DataTypes.STRING,
             invitation_hash: DataTypes.STRING,
-            registered: DataTypes.DATE
+            registered: DataTypes.DATE,
+            role: DataTypes.INTEGER
         },
         {
             classMethods: {
@@ -41,12 +42,13 @@ module.exports = function (sequelize, DataTypes) {
                     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
                 }
                 ,
-                sendInvitation: function (email, done) {
+                sendInvitation: function (data, done) {
                     this.create({
-                        email: email,
+                        email: data.email,
                         password: '',
                         invitation_hash: randomHash(),
-                        registered: new Date(1980, 6, 20)
+                        registered: '',
+                        role: data.role
                     }).then(function (user) {
                         done({
                                 type: 'success',

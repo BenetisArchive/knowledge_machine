@@ -7,6 +7,7 @@ var Route = Router.Route;
 var request = require('superagent');
 var Input = require('react-bootstrap').Input;
 var _ = require('lodash');
+//TODO: refactor for less code
 module.exports = React.createClass({
     onFormSubmit: function(data, callback) {
         request
@@ -27,6 +28,7 @@ var Form = React.createClass({
     getInitialState: function() {
         return {
             email: 'test@a',
+            role: '1',
             error: ''
         }
     },
@@ -38,6 +40,7 @@ var Form = React.createClass({
 
         var inputValidation = {
             email: isEmailValid(this.state.email),
+            role: true,
             error: true
         };
 
@@ -56,11 +59,18 @@ var Form = React.createClass({
             email: e.target.value
         });
     },
+    changeRole: function(e) {
+        this.setState({
+            role: e.target.value
+        })
+    },
     handleSubmit: function(e) {
         e.preventDefault();
         var email = this.state.email.trim();
+        var role = this.state.role.trim();
         this.props.onFormSubmit({
-            email: email
+            email: email,
+            role: role
         }, function(result) {
             this.setState({
                 error: result.msg
@@ -81,6 +91,11 @@ var Form = React.createClass({
             <form onSubmit={ this.handleSubmit } className="invitation_form form-horizontal col-xs-offset-1">
                 <h1 className="form_header col-xs-offset-2">Users invitation</h1>
                 <Input type="text" label="E-mail" value={this.state.email} onChange={this.changeEmail} labelClassName="col-xs-2" wrapperClassName="col-xs-7" bsStyle={this.getEmailValidation()} hasFeedback />
+                <Input type="select" label='User role' defaultValue="1" onChange={this.changeRole} labelClassName="col-xs-2" wrapperClassName="col-xs-7" >
+                    <option value="1">Student</option>
+                    <option value="2">Lecturer</option>
+                    <option value="3">Administrator</option>
+                </Input>
                 <Input type="static" wrapperClassName="col-xs-offset-2 col-xs-7" value={this.state.error} />
                 <Input type="submit" label="" wrapperClassName="col-xs-offset-2 col-xs-7" disabled={ this.formHasErrors() }/>
             </form>
