@@ -29,7 +29,7 @@ app.use(flash());
 
 //Routes
 app.use("/public", express.static(__dirname + "/../build/"));
-require('./app/routes.js')(app);
+require('./app/routes')(app);
 
 // error handlers
 
