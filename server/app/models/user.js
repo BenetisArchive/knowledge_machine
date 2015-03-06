@@ -28,6 +28,7 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false
             },
             password: DataTypes.STRING,
+            salt: DataTypes.STRING,
             invitation_hash: DataTypes.STRING,
             registered: DataTypes.DATE,
             role: DataTypes.INTEGER
@@ -36,12 +37,25 @@ module.exports = function (sequelize, DataTypes) {
             classMethods: {
                 associate: function (models) {
                     //User.hasMany(models.Task)
-                }
-                ,
+                },
+                isUserLoginValid: function(data, next) {
+                    console.log('this is respoding');
+                    return User.findOne({where: {email: data.email}})
+                        .then(function(user) {
+                            var noUserOrPassDidntMatch = -1;
+                            if(user) {
+                                next(user.validPassword(data.password) ? user.id : noUserOrPassDidntMatch)
+                            } else {
+                                return noUserOrPassDidntMatch
+                            }
+                        })
+                        .error(function(error) {
+                            return -1;
+                        })
+                },
                 generateHash: function (password) {
                     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-                }
-                ,
+                },
                 sendInvitation: function (data, done) {
                     this.create({
                         email: data.email,
@@ -70,6 +84,11 @@ module.exports = function (sequelize, DataTypes) {
 
                         return text;
                     }
+                }
+            },
+            instanceMethods: {
+                validPassword: function(password) {
+                    return bcrypt.compareSync(password, this.password);
                 }
             }
         }

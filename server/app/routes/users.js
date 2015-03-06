@@ -2,19 +2,24 @@ var models = require('./../models/index');
 
 module.exports = function(app) {
     app.post('/login', function (req, res) {
-        var post = req.body;
-        if (post.user === 'john' && post.password === 'johnspassword') {
-            req.session.user_id = johns_user_id_here;
-            res.redirect('/my_secret_page');
-        } else {
-            res.send('Bad user/pass');
-        }
+        models.User.isUserLoginValid(req.body.data, function(userId) {
+            if(noUserFound()) {
+                res.send({type: 'error', msg: 'Invalid username or password'})
+            } else {
+                req.session.userId = userId;
+                res.send({type: 'success', msg: 'Logged in'});
+            }
+
+            function noUserFound() {
+                return userId === -1;
+            }
+        });
     });
 
-    app.get('/logout', function (req, res) {
-        delete req.session.user_id;
-        res.redirect('/login');
-    });
+    //app.get('/logout', function (req, res) {
+    //    delete req.session.user_id;
+    //    res.redirect('/login');
+    //});
 
     //Returns {type: '(error, success)', msg: '' }
     app.post('/invite-users', function (req, res) {
@@ -25,12 +30,4 @@ module.exports = function(app) {
 
     //TODO: check email separately
 
-    function checkAuth(req, res, next) {
-        if (!req.session.user_id) {
-            res.send('You are not authorized to view this page');
-        } else {
-            res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-            next();
-        }
-    }
 };
