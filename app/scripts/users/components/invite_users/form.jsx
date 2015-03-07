@@ -1,30 +1,13 @@
 "use strict";
 var React = require('react');
-var request = require('superagent');
 var Input = require('react-bootstrap').Input;
 var _ = require('lodash');
 var Authentication = require('../authentication');
-
+var users = require('../../services/invite-users');
 
 //TODO: add new button to clear form
 module.exports = React.createClass({
     mixins: [ Authentication ],
-    onFormSubmit: function(data, callback) {
-        request
-            .post('/invite-users')
-            .send({data})
-            .end(function(error, res){
-                callback(JSON.parse(res.text));
-            });
-    },
-    render: function () {
-        return (
-            <Form onFormSubmit={this.onFormSubmit}/>
-        );
-    }
-});
-
-var Form = React.createClass({
     getInitialState: function() {
         return {
             email: 'test@a.com',
@@ -74,7 +57,7 @@ var Form = React.createClass({
         e.preventDefault();
         var email = this.state.email.trim();
         var role = this.state.role.trim();
-        this.props.onFormSubmit({
+        users.inviteUsers({
             email: email,
             role: role
         }, function(result) {
