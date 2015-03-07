@@ -7,17 +7,9 @@ var _ = require('lodash');
 var auth = require('../../services/auth');
 
 module.exports = React.createClass({
-    onFormSubmit: function(data, callback) {
-        request
-            .post('/login')
-            .send({data})
-            .end(function(error, res){
-                callback(JSON.parse(res.text));
-            });
-    },
     render: function () {
         return (
-            <Form onFormSubmit={this.onFormSubmit} logIn={auth.logIn} />
+            <Form onFormSubmit={auth.logIn} />
         );
     }
 });

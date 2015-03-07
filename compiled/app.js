@@ -31,52 +31,6 @@ var App = React.createClass({displayName: "App",
     }
 });
 
-var SignedIn = React.createClass({displayName: "SignedIn",
-    render: function () {
-        return (
-            React.createElement("div", null, 
-                React.createElement("h2", null, "Signed In"), 
-                React.createElement(RouteHandler, null)
-            )
-        );
-    }
-});
-
-var Home = React.createClass({displayName: "Home",
-    render: function () {
-        return (
-            React.createElement("h3", null, "Welcome home!")
-        );
-    }
-});
-
-var SignedOut = React.createClass({displayName: "SignedOut",
-    render: function () {
-        return (
-            React.createElement("div", null, 
-                React.createElement("h2", null, "Signed Out"), 
-                React.createElement(RouteHandler, null)
-            )
-        );
-    }
-});
-
-var ForgotPassword = React.createClass({displayName: "ForgotPassword",
-    getInitialState: function() {
-        return {users: ''};
-    },
-    componentWillMount: function() {
-        get("/users", function (res) {
-            this.setState({users : res.text})
-        }.bind(this));
-    },
-    render: function () {
-        return (
-            React.createElement("h3", null, this.state.users)
-        );
-    }
-});
-
 var InviteUsersFormWrapper = require('./users/components/invite_users/form');
 var LoginUsersFormWrapper = require('./users/components/login/form');
 

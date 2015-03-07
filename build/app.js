@@ -32,52 +32,6 @@ var App = React.createClass({displayName: "App",
     }
 });
 
-var SignedIn = React.createClass({displayName: "SignedIn",
-    render: function () {
-        return (
-            React.createElement("div", null, 
-                React.createElement("h2", null, "Signed In"), 
-                React.createElement(RouteHandler, null)
-            )
-        );
-    }
-});
-
-var Home = React.createClass({displayName: "Home",
-    render: function () {
-        return (
-            React.createElement("h3", null, "Welcome home!")
-        );
-    }
-});
-
-var SignedOut = React.createClass({displayName: "SignedOut",
-    render: function () {
-        return (
-            React.createElement("div", null, 
-                React.createElement("h2", null, "Signed Out"), 
-                React.createElement(RouteHandler, null)
-            )
-        );
-    }
-});
-
-var ForgotPassword = React.createClass({displayName: "ForgotPassword",
-    getInitialState: function() {
-        return {users: ''};
-    },
-    componentWillMount: function() {
-        get("/users", function (res) {
-            this.setState({users : res.text})
-        }.bind(this));
-    },
-    render: function () {
-        return (
-            React.createElement("h3", null, this.state.users)
-        );
-    }
-});
-
 var InviteUsersFormWrapper = require('./users/components/invite_users/form');
 var LoginUsersFormWrapper = require('./users/components/login/form');
 
@@ -203,17 +157,9 @@ var _ = require('lodash');
 var auth = require('../../services/auth');
 
 module.exports = React.createClass({displayName: "exports",
-    onFormSubmit: function(data, callback) {
-        request
-            .post('/login')
-            .send({data:data})
-            .end(function(error, res){
-                callback(JSON.parse(res.text));
-            });
-    },
     render: function () {
         return (
-            React.createElement(Form, {onFormSubmit: this.onFormSubmit, logIn: auth.logIn})
+            React.createElement(Form, {onFormSubmit: auth.logIn})
         );
     }
 });
@@ -270,8 +216,16 @@ var get = function (url, cb) {
 module.exports = {
     isLoggedIn: function() {
         return cookies.get('userId') > 0
+    },
+    logIn: function(data, callback) {
+        request
+            .post('/login')
+            .send({data:data})
+            .end(function(error, res){
+                callback(JSON.parse(res.text));
+            });
     }
-}; 
+};
 
 
 },{"cookies-js":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/cookies-js/dist/cookies.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){

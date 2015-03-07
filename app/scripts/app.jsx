@@ -31,52 +31,6 @@ var App = React.createClass({
     }
 });
 
-var SignedIn = React.createClass({
-    render: function () {
-        return (
-            <div>
-                <h2>Signed In</h2>
-                <RouteHandler/>
-            </div>
-        );
-    }
-});
-
-var Home = React.createClass({
-    render: function () {
-        return (
-            <h3>Welcome home!</h3>
-        );
-    }
-});
-
-var SignedOut = React.createClass({
-    render: function () {
-        return (
-            <div>
-                <h2>Signed Out</h2>
-                <RouteHandler/>
-            </div>
-        );
-    }
-});
-
-var ForgotPassword = React.createClass({
-    getInitialState: function() {
-        return {users: ''};
-    },
-    componentWillMount: function() {
-        get("/users", function (res) {
-            this.setState({users : res.text})
-        }.bind(this));
-    },
-    render: function () {
-        return (
-            <h3>{this.state.users}</h3>
-        );
-    }
-});
-
 var InviteUsersFormWrapper = require('./users/components/invite_users/form');
 var LoginUsersFormWrapper = require('./users/components/login/form');
 
