@@ -4,7 +4,8 @@ var request = require('superagent');
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 var Route = Router.Route;
-var auth = require('./users/services/auth');
+var auth = require('./main/services/auth');
+var Header = require('./main/components/header/menu');
 
 var App = React.createClass({
     getInitialState: function() {
@@ -48,8 +49,8 @@ var SignedOut = React.createClass({
     }
 });
 
-var InviteUsers = require('./users/components/users/inviteUsers');
-var LogIn = require('./users/components/auth/login');
+var InviteUsers = require('./main/components/users/inviteUsers');
+var LogIn = require('./main/components/auth/login');
 var LogOut = React.createClass({
    componentDidMount: function() {
         auth.logOut(function(result){
@@ -61,6 +62,7 @@ var LogOut = React.createClass({
         );
     }
 });
+
 var routes = (
     <Route handler={App}>
             <Route handler={SignedIn}>

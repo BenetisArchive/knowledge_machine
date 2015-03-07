@@ -3,7 +3,7 @@ var React = require('react');
 var Input = require('react-bootstrap').Input;
 var _ = require('lodash');
 var Authentication = require('../authentication');
-var users = require('../../services/invite-users');
+var users = require('../../services/users');
 
 //TODO: add new button to clear form
 module.exports = React.createClass({
