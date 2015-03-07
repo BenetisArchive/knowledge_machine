@@ -1,11 +1,17 @@
 var express = require('express');
 var router = express.Router();
-
+var _ = require('lodash');
 module.exports = function (app) {
+    var urlsWithoutAuth = ['/', '/login', '/logout'];
     function checkAuth (req, res, next) {
-        if (req.url !== '/login' && req.url !== '/') {
-            if(!req.session.userId) {
-                res.send('Unauthorized');
+        var routeWithoutAuth = _.some(urlsWithoutAuth, function(url) {
+            return url === req.url
+        });
+        if (!routeWithoutAuth) {
+            var userIsNotLoggedIn = !req.session.userId;
+            if(userIsNotLoggedIn) {
+                res.status(403);
+                res.end('Unauthorized');
                 return;
             }
         }
