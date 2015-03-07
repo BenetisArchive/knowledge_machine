@@ -7,12 +7,6 @@ var Link = Router.Link;
 var Route = Router.Route;
 var auth = require('./users/services/auth');
 
-var get = function (url, cb) {
-    request.get(url)
-        .set("Content-Type", "application/json")
-        .end(cb);
-};
-
 var App = React.createClass({displayName: "App",
     getInitialState: function() {
         return {
@@ -32,13 +26,13 @@ var App = React.createClass({displayName: "App",
     }
 });
 
-var InviteUsersFormWrapper = require('./users/components/invite_users/form');
-var LoginUsers = require('./users/components/login/form');
+var InviteUsers = require('./users/components/users/inviteUsers');
+var LogIn = require('./users/components/auth/login');
 
 var routes = (
     React.createElement(Route, {handler: App}, 
-            React.createElement(Route, {name: "invite-users", handler: InviteUsersFormWrapper}), 
-            React.createElement(Route, {name: "login", handler: LoginUsers})
+            React.createElement(Route, {name: "invite-users", handler: InviteUsers}), 
+            React.createElement(Route, {name: "login", handler: LogIn})
     )
 );
 
@@ -47,7 +41,63 @@ Router.run(routes, function (Handler) {
 });
 
 
-},{"./users/components/invite_users/form":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invite_users/form.js","./users/components/login/form":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/login/form.js","./users/services/auth":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/services/auth.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/authentication.js":[function(require,module,exports){
+},{"./users/components/auth/login":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/auth/login.js","./users/components/users/inviteUsers":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/users/inviteUsers.js","./users/services/auth":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/services/auth.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/auth/login.js":[function(require,module,exports){
+"use strict";
+var React = require('react');
+var Input = require('react-bootstrap').Input;
+var Router = require('react-router');
+var State = Router.State;
+
+module.exports = React.createClass({displayName: "exports",
+    mixins: [ Router.Navigation, State],
+    getInitialState: function() {
+        return {
+            email: 'test@a.lt',
+            password: '123',
+            msg: ''
+        }
+    },
+    handleInputChange: function(e) {
+        var nextState = {};
+        nextState[e.target.name] = e.target.value;
+        this.setState(nextState);
+    },
+    handleSubmit: function(e) {
+        e.preventDefault();
+        var email = this.state.email.trim();
+        var password = this.state.password.trim();
+        this.props.logIn({
+            email: email,
+            password: password
+        }, function(result) {
+            this.setState({
+                msg: result.msg
+            });
+            if(result.type === 'success') {
+                var nextPath = this.getQuery().nextPath;
+                if (nextPath) {
+                    this.transitionTo(nextPath);
+                } else {
+                    this.replaceWith('/');
+                }
+            }
+        }.bind(this));
+    },
+    render: function () {
+        return (
+            React.createElement("form", {onSubmit:  this.handleSubmit, className: "invitation_form form-horizontal col-xs-offset-1"}, 
+                React.createElement("h1", {className: "form_header col-xs-offset-2"}, "Login"), 
+                React.createElement(Input, {type: "text", name: "email", label: "E-mail", value: this.state.email, onChange: this.handleInputChange, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}), 
+                React.createElement(Input, {type: "password", name: "password", label: "Password", value: this.state.password, onChange: this.handleInputChange, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}), 
+                React.createElement(Input, {type: "static", wrapperClassName: "col-xs-offset-2 col-xs-7", value: this.state.msg}), 
+                React.createElement(Input, {type: "submit", value: "Login", label: "", wrapperClassName: "col-xs-offset-2 col-xs-7"})
+            )
+        );
+    }
+});
+
+
+},{"react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/authentication.js":[function(require,module,exports){
 var auth = require('../services/auth');
 
 module.exports = {
@@ -63,7 +113,7 @@ module.exports = {
 };
 
 
-},{"../services/auth":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/services/auth.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invite_users/form.js":[function(require,module,exports){
+},{"../services/auth":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/services/auth.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/users/inviteUsers.js":[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require('react-bootstrap').Input;
@@ -150,72 +200,9 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"../../services/invite-users":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/services/invite-users.js","../authentication":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/authentication.js","lodash":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/lodash/index.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/login/form.js":[function(require,module,exports){
-"use strict";
-var React = require('react');
-var Input = require('react-bootstrap').Input;
-var Router = require('react-router');
-var State = Router.State;
-
-module.exports = React.createClass({displayName: "exports",
-    mixins: [ Router.Navigation, State],
-    getInitialState: function() {
-        console.log(this.props);
-        return {
-            email: 'test@a.lt',
-            password: '123',
-            msg: ''
-        }
-    },
-    handleInputChange: function(e) {
-        var nextState = {};
-        nextState[e.target.name] = e.target.value;
-        this.setState(nextState);
-    },
-    handleSubmit: function(e) {
-        e.preventDefault();
-        var email = this.state.email.trim();
-        var password = this.state.password.trim();
-        this.props.logIn({
-            email: email,
-            password: password
-        }, function(result) {
-            this.setState({
-                msg: result.msg
-            });
-            if(result.type === 'success') {
-                var nextPath = this.getQuery().nextPath;
-                if (nextPath) {
-                    this.transitionTo(nextPath);
-                } else {
-                    this.replaceWith('/');
-                }
-            }
-        }.bind(this));
-    },
-    render: function () {
-        return (
-            React.createElement("form", {onSubmit:  this.handleSubmit, className: "invitation_form form-horizontal col-xs-offset-1"}, 
-                React.createElement("h1", {className: "form_header col-xs-offset-2"}, "Login"), 
-                React.createElement(Input, {type: "text", name: "email", label: "E-mail", value: this.state.email, onChange: this.handleInputChange, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}), 
-                React.createElement(Input, {type: "password", name: "password", label: "Password", value: this.state.password, onChange: this.handleInputChange, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}), 
-                React.createElement(Input, {type: "static", wrapperClassName: "col-xs-offset-2 col-xs-7", value: this.state.msg}), 
-                React.createElement(Input, {type: "submit", value: "Login", label: "", wrapperClassName: "col-xs-offset-2 col-xs-7"})
-            )
-        );
-    }
-});
-
-
-},{"react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/services/auth.js":[function(require,module,exports){
+},{"../../services/invite-users":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/services/invite-users.js","../authentication":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/authentication.js","lodash":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/lodash/index.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/services/auth.js":[function(require,module,exports){
 var request = require('superagent');
 var cookies = require('cookies-js');
-
-var get = function (url, cb) {
-    request.get(url)
-        .set("Content-Type", "application/json")
-        .end(cb);
-};
 
 module.exports = {
     isLoggedIn: function() {

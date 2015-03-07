@@ -6,12 +6,6 @@ var Link = Router.Link;
 var Route = Router.Route;
 var auth = require('./users/services/auth');
 
-var get = function (url, cb) {
-    request.get(url)
-        .set("Content-Type", "application/json")
-        .end(cb);
-};
-
 var App = React.createClass({displayName: "App",
     getInitialState: function() {
         return {
@@ -31,13 +25,13 @@ var App = React.createClass({displayName: "App",
     }
 });
 
-var InviteUsersFormWrapper = require('./users/components/invite_users/form');
-var LoginUsers = require('./users/components/login/form');
+var InviteUsers = require('./users/components/users/inviteUsers');
+var LogIn = require('./users/components/auth/login');
 
 var routes = (
     React.createElement(Route, {handler: App}, 
-            React.createElement(Route, {name: "invite-users", handler: InviteUsersFormWrapper}), 
-            React.createElement(Route, {name: "login", handler: LoginUsers})
+            React.createElement(Route, {name: "invite-users", handler: InviteUsers}), 
+            React.createElement(Route, {name: "login", handler: LogIn})
     )
 );
 
