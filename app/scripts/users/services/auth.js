@@ -12,5 +12,12 @@ module.exports = {
             .end(function(error, res){
                 callback(JSON.parse(res.text));
             });
+    },
+    logOut: function(callback) {
+        request
+            .post('/logout')
+            .end(function(error, res){
+                callback(JSON.parse(res.text));
+            });
     }
 };

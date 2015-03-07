@@ -17,12 +17,11 @@ module.exports = function(app) {
         });
     });
 
-    //app.get('/logout', function (req, res) {
-    //    delete req.session.user_id;
-    //    res.redirect('/login');
-    //});
-
-
+    app.post('/logout', function (req, res) {
+        res.clearCookie('userId');
+        delete req.session.userId;
+        res.json({type: 'success', msg: 'Logged out'});
+    });
 
     //Returns {type: '(error, success)', msg: '' }
     app.post('/invite-users', function (req, res) {

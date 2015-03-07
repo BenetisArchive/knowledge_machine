@@ -18,8 +18,31 @@ var App = React.createClass({
                 <ol>
                     <li><Link to="login">Login</Link></li>
                     <li><Link to="invite-users">Invite users</Link></li>
+                    <li><Link to="logout">Log out</Link></li>
                 </ol>
-                <RouteHandler logIn={auth.logIn} />
+                <RouteHandler/>
+            </div>
+        );
+    }
+});
+
+var SignedIn = React.createClass({
+    render: function () {
+        return (
+            <div>
+                <h2>Signed In</h2>
+                <RouteHandler />
+            </div>
+        );
+    }
+});
+
+var SignedOut = React.createClass({
+    render: function () {
+        return (
+            <div>
+                <h2>Signed Out</h2>
+                <RouteHandler logIn={auth.logIn}/>
             </div>
         );
     }
@@ -27,11 +50,26 @@ var App = React.createClass({
 
 var InviteUsers = require('./users/components/users/inviteUsers');
 var LogIn = require('./users/components/auth/login');
-
+var LogOut = React.createClass({
+   componentDidMount: function() {
+        auth.logOut(function(result){
+        });
+   },
+    render: function() {
+        return (
+            <div>You are logged out</div>
+        );
+    }
+});
 var routes = (
     <Route handler={App}>
-            <Route name="invite-users" handler={InviteUsers}/>
-            <Route name="login" handler={LogIn} />
+            <Route handler={SignedIn}>
+                <Route name="invite-users" handler={InviteUsers}/>
+                <Route name="logout" handler={LogOut}/>
+            </Route>
+            <Route handler={SignedOut}>
+                <Route name="login" handler={LogIn} />
+            </Route>
     </Route>
 );
 
