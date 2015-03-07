@@ -3,8 +3,25 @@ var React = require('react');
 var request = require('superagent');
 var Input = require('react-bootstrap').Input;
 var _ = require('lodash');
+var auth = require('../../services/auth');
+
+
+var Authentication = {
+    statics: {
+        willTransitionTo: function (transition) {
+            var nextPath = transition.path;
+            if (!auth.isLoggedIn()) {
+                transition.redirect('/login',{},
+                    { 'nextPath' : nextPath });
+            }
+        }
+    }
+};
+
+
 //TODO: add new button to clear form
 module.exports = React.createClass({
+    mixins: [ Authentication ],
     onFormSubmit: function(data, callback) {
         request
             .post('/invite-users')

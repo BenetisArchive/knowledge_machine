@@ -3,9 +3,9 @@ var React = require('react');
 var request = require('superagent');
 var Input = require('react-bootstrap').Input;
 var _ = require('lodash');
-
 var auth = require('../../services/auth');
-
+var Router = require('react-router');
+var State = Router.State;
 module.exports = React.createClass({
     render: function () {
         return (
@@ -14,6 +14,7 @@ module.exports = React.createClass({
     }
 });
 var Form = React.createClass({
+    mixins: [ Router.Navigation, State],
     getInitialState: function() {
         return {
             email: 'test@a.lt',
@@ -37,6 +38,14 @@ var Form = React.createClass({
             this.setState({
                 msg: result.msg
             });
+            if(result.type === 'success') {
+                var nextPath = this.getQuery().nextPath;
+                if (nextPath) {
+                    this.transitionTo(nextPath);
+                } else {
+                    this.replaceWith('/');
+                }
+            }
         }.bind(this));
     },
     render: function () {
