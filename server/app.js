@@ -10,13 +10,11 @@ var session  = require('express-session');
 var app = module.exports.app = exports.app = express();
 
 function checkAuth (req, res, next) {
-    console.log('checkAuth ' + req.url);
-
-    // don't serve /secure to those not logged in
-    // you should add to this list, for each and every secure url
-    if (req.url === '/invite-users' && (!req.session || !req.session.userId)) {
-        res.send('unauthorized');
-        return;
+    if (req.url !== '/login') {
+        if(!req.session.userId) {
+            res.send('Unauthorized');
+            return;
+        }
     }
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     next();

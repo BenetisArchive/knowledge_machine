@@ -23,6 +23,10 @@ module.exports = function(app) {
         res.json({type: 'success', msg: 'Logged out'});
     });
 
+    app.get('/tmp', function (req, res) {
+        res.json({type: 'success', msg: 'Logged out'});
+    });
+
     //Returns {type: '(error, success)', msg: '' }
     app.post('/invite-users', function (req, res) {
         models.User.sendInvitation(req.body.data , function(result) {
