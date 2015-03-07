@@ -7,7 +7,6 @@ var State = Router.State;
 module.exports = React.createClass({
     mixins: [ Router.Navigation, State],
     getInitialState: function() {
-        console.log(this.props);
         return {
             email: 'test@a.lt',
             password: '123',
