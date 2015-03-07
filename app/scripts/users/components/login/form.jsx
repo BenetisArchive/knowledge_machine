@@ -1,21 +1,13 @@
 "use strict";
 var React = require('react');
-var request = require('superagent');
 var Input = require('react-bootstrap').Input;
-var _ = require('lodash');
-var auth = require('../../services/auth');
 var Router = require('react-router');
 var State = Router.State;
+
 module.exports = React.createClass({
-    render: function () {
-        return (
-            <Form onFormSubmit={auth.logIn} />
-        );
-    }
-});
-var Form = React.createClass({
     mixins: [ Router.Navigation, State],
     getInitialState: function() {
+        console.log(this.props);
         return {
             email: 'test@a.lt',
             password: '123',
@@ -31,7 +23,7 @@ var Form = React.createClass({
         e.preventDefault();
         var email = this.state.email.trim();
         var password = this.state.password.trim();
-        this.props.onFormSubmit({
+        this.props.logIn({
             email: email,
             password: password
         }, function(result) {

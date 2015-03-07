@@ -25,19 +25,19 @@ var App = React.createClass({displayName: "App",
                     React.createElement("li", null, React.createElement(Link, {to: "login"}, "Login")), 
                     React.createElement("li", null, React.createElement(Link, {to: "invite-users"}, "Invite users"))
                 ), 
-                React.createElement(RouteHandler, null)
+                React.createElement(RouteHandler, {logIn: auth.logIn})
             )
         );
     }
 });
 
 var InviteUsersFormWrapper = require('./users/components/invite_users/form');
-var LoginUsersFormWrapper = require('./users/components/login/form');
+var LoginUsers = require('./users/components/login/form');
 
 var routes = (
     React.createElement(Route, {handler: App}, 
             React.createElement(Route, {name: "invite-users", handler: InviteUsersFormWrapper}), 
-            React.createElement(Route, {name: "login", handler: LoginUsersFormWrapper})
+            React.createElement(Route, {name: "login", handler: LoginUsers})
     )
 );
 

@@ -25,19 +25,19 @@ var App = React.createClass({
                     <li><Link to="login">Login</Link></li>
                     <li><Link to="invite-users">Invite users</Link></li>
                 </ol>
-                <RouteHandler/>
+                <RouteHandler logIn={auth.logIn} />
             </div>
         );
     }
 });
 
 var InviteUsersFormWrapper = require('./users/components/invite_users/form');
-var LoginUsersFormWrapper = require('./users/components/login/form');
+var LoginUsers = require('./users/components/login/form');
 
 var routes = (
     <Route handler={App}>
             <Route name="invite-users" handler={InviteUsersFormWrapper}/>
-            <Route name="login" handler={LoginUsersFormWrapper} />
+            <Route name="login" handler={LoginUsers} />
     </Route>
 );
 
