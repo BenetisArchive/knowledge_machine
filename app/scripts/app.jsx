@@ -4,6 +4,7 @@ var request = require('superagent');
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 var Route = Router.Route;
+var auth = require('./users/services/auth');
 
 var get = function (url, cb) {
     request.get(url)
@@ -12,13 +13,17 @@ var get = function (url, cb) {
 };
 
 var App = React.createClass({
+    getInitialState: function() {
+        return {
+            loggedIn : auth.isLoggedIn()
+        }
+    },
     render: function () {
         return (
             <div>
                 <ol>
                     <li><Link to="login">Login</Link></li>
                     <li><Link to="invite-users">Invite users</Link></li>
-                    <li><Link to="home">Forgot Password</Link></li>
                 </ol>
                 <RouteHandler/>
             </div>
@@ -78,8 +83,7 @@ var LoginUsersFormWrapper = require('./users/components/login/form');
 var routes = (
     <Route handler={App}>
             <Route name="invite-users" handler={InviteUsersFormWrapper}/>
-            <Route name="login" handler={LoginUsersFormWrapper}/>
-            <Route name="home" handler={Home}/>
+            <Route name="login" handler={LoginUsersFormWrapper} />
     </Route>
 );
 

@@ -3,6 +3,9 @@ var React = require('react');
 var request = require('superagent');
 var Input = require('react-bootstrap').Input;
 var _ = require('lodash');
+
+var auth = require('../../services/auth');
+
 module.exports = React.createClass({
     onFormSubmit: function(data, callback) {
         request
@@ -14,16 +17,16 @@ module.exports = React.createClass({
     },
     render: function () {
         return (
-            <Form onFormSubmit={this.onFormSubmit}/>
+            <Form onFormSubmit={this.onFormSubmit} logIn={auth.logIn} />
         );
     }
 });
 var Form = React.createClass({
     getInitialState: function() {
         return {
-            email: '',
-            password: '',
-            error: ''
+            email: 'test@a.lt',
+            password: '123',
+            msg: ''
         }
     },
     handleInputChange: function(e) {
@@ -40,7 +43,7 @@ var Form = React.createClass({
             password: password
         }, function(result) {
             this.setState({
-                error: result.msg
+                msg: result.msg
             });
         }.bind(this));
     },
@@ -48,9 +51,9 @@ var Form = React.createClass({
         return (
             <form onSubmit={ this.handleSubmit } className="invitation_form form-horizontal col-xs-offset-1">
                 <h1 className="form_header col-xs-offset-2">Login</h1>
-                <Input type="text" name="email" label="E-mail" onChange={this.handleInputChange} labelClassName="col-xs-2" wrapperClassName="col-xs-7" />
-                <Input type="password" name="password" label="Password" onChange={this.handleInputChange} labelClassName="col-xs-2" wrapperClassName="col-xs-7" />
-                <Input type="static" wrapperClassName="col-xs-offset-2 col-xs-7" value={this.state.error} />
+                <Input type="text" name="email" label="E-mail" value={this.state.email} onChange={this.handleInputChange} labelClassName="col-xs-2" wrapperClassName="col-xs-7" />
+                <Input type="password" name="password" label="Password" value={this.state.password} onChange={this.handleInputChange} labelClassName="col-xs-2" wrapperClassName="col-xs-7" />
+                <Input type="static" wrapperClassName="col-xs-offset-2 col-xs-7" value={this.state.msg} />
                 <Input type="submit" value="Login" label="" wrapperClassName="col-xs-offset-2 col-xs-7" />
             </form>
         );

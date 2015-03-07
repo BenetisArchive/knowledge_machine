@@ -7,14 +7,15 @@ module.exports = function (app) {
     });
 
     app.get('/invite-users', function (req, res) {
-        res.send({works: 'Congrats'})
+        res.json({works: 'Congrats'})
     });
 
-    app.get('/error', function (req, res) {
-        res.send({error: 'dafa'})
+    app.get('/logged_in', function (req, res) {
+        console.log(req.session.userId);
+        res.end(req.session.userId+"")
     });
 
     app.get('/succ', function (req, res) {
-        res.send({error: 'yeeeeee'})
+        res.json({error: 'yeeeeee'})
     });
 };

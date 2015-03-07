@@ -4,6 +4,7 @@ var request = require('superagent');
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 var Route = Router.Route;
+var auth = require('./users/services/auth');
 
 var get = function (url, cb) {
     request.get(url)
@@ -12,13 +13,17 @@ var get = function (url, cb) {
 };
 
 var App = React.createClass({displayName: "App",
+    getInitialState: function() {
+        return {
+            loggedIn : auth.isLoggedIn()
+        }
+    },
     render: function () {
         return (
             React.createElement("div", null, 
                 React.createElement("ol", null, 
                     React.createElement("li", null, React.createElement(Link, {to: "login"}, "Login")), 
-                    React.createElement("li", null, React.createElement(Link, {to: "invite-users"}, "Invite users")), 
-                    React.createElement("li", null, React.createElement(Link, {to: "home"}, "Forgot Password"))
+                    React.createElement("li", null, React.createElement(Link, {to: "invite-users"}, "Invite users"))
                 ), 
                 React.createElement(RouteHandler, null)
             )
@@ -78,8 +83,7 @@ var LoginUsersFormWrapper = require('./users/components/login/form');
 var routes = (
     React.createElement(Route, {handler: App}, 
             React.createElement(Route, {name: "invite-users", handler: InviteUsersFormWrapper}), 
-            React.createElement(Route, {name: "login", handler: LoginUsersFormWrapper}), 
-            React.createElement(Route, {name: "home", handler: Home})
+            React.createElement(Route, {name: "login", handler: LoginUsersFormWrapper})
     )
 );
 

@@ -5,6 +5,7 @@ var request = require('superagent');
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 var Route = Router.Route;
+var auth = require('./users/services/auth');
 
 var get = function (url, cb) {
     request.get(url)
@@ -13,13 +14,17 @@ var get = function (url, cb) {
 };
 
 var App = React.createClass({displayName: "App",
+    getInitialState: function() {
+        return {
+            loggedIn : auth.isLoggedIn()
+        }
+    },
     render: function () {
         return (
             React.createElement("div", null, 
                 React.createElement("ol", null, 
                     React.createElement("li", null, React.createElement(Link, {to: "login"}, "Login")), 
-                    React.createElement("li", null, React.createElement(Link, {to: "invite-users"}, "Invite users")), 
-                    React.createElement("li", null, React.createElement(Link, {to: "home"}, "Forgot Password"))
+                    React.createElement("li", null, React.createElement(Link, {to: "invite-users"}, "Invite users"))
                 ), 
                 React.createElement(RouteHandler, null)
             )
@@ -79,8 +84,7 @@ var LoginUsersFormWrapper = require('./users/components/login/form');
 var routes = (
     React.createElement(Route, {handler: App}, 
             React.createElement(Route, {name: "invite-users", handler: InviteUsersFormWrapper}), 
-            React.createElement(Route, {name: "login", handler: LoginUsersFormWrapper}), 
-            React.createElement(Route, {name: "home", handler: Home})
+            React.createElement(Route, {name: "login", handler: LoginUsersFormWrapper})
     )
 );
 
@@ -89,7 +93,7 @@ Router.run(routes, function (Handler) {
 });
 
 
-},{"./users/components/invite_users/form":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invite_users/form.js","./users/components/login/form":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/login/form.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invite_users/form.js":[function(require,module,exports){
+},{"./users/components/invite_users/form":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invite_users/form.js","./users/components/login/form":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/login/form.js","./users/services/auth":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/services/auth.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/components/invite_users/form.js":[function(require,module,exports){
 "use strict";
 var React = require('react');
 var request = require('superagent');
@@ -195,6 +199,9 @@ var React = require('react');
 var request = require('superagent');
 var Input = require('react-bootstrap').Input;
 var _ = require('lodash');
+
+var auth = require('../../services/auth');
+
 module.exports = React.createClass({displayName: "exports",
     onFormSubmit: function(data, callback) {
         request
@@ -206,16 +213,16 @@ module.exports = React.createClass({displayName: "exports",
     },
     render: function () {
         return (
-            React.createElement(Form, {onFormSubmit: this.onFormSubmit})
+            React.createElement(Form, {onFormSubmit: this.onFormSubmit, logIn: auth.logIn})
         );
     }
 });
 var Form = React.createClass({displayName: "Form",
     getInitialState: function() {
         return {
-            email: '',
-            password: '',
-            error: ''
+            email: 'test@a.lt',
+            password: '123',
+            msg: ''
         }
     },
     handleInputChange: function(e) {
@@ -232,7 +239,7 @@ var Form = React.createClass({displayName: "Form",
             password: password
         }, function(result) {
             this.setState({
-                error: result.msg
+                msg: result.msg
             });
         }.bind(this));
     },
@@ -240,9 +247,9 @@ var Form = React.createClass({displayName: "Form",
         return (
             React.createElement("form", {onSubmit:  this.handleSubmit, className: "invitation_form form-horizontal col-xs-offset-1"}, 
                 React.createElement("h1", {className: "form_header col-xs-offset-2"}, "Login"), 
-                React.createElement(Input, {type: "text", name: "email", label: "E-mail", onChange: this.handleInputChange, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}), 
-                React.createElement(Input, {type: "password", name: "password", label: "Password", onChange: this.handleInputChange, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}), 
-                React.createElement(Input, {type: "static", wrapperClassName: "col-xs-offset-2 col-xs-7", value: this.state.error}), 
+                React.createElement(Input, {type: "text", name: "email", label: "E-mail", value: this.state.email, onChange: this.handleInputChange, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}), 
+                React.createElement(Input, {type: "password", name: "password", label: "Password", value: this.state.password, onChange: this.handleInputChange, labelClassName: "col-xs-2", wrapperClassName: "col-xs-7"}), 
+                React.createElement(Input, {type: "static", wrapperClassName: "col-xs-offset-2 col-xs-7", value: this.state.msg}), 
                 React.createElement(Input, {type: "submit", value: "Login", label: "", wrapperClassName: "col-xs-offset-2 col-xs-7"})
             )
         );
@@ -250,7 +257,24 @@ var Form = React.createClass({displayName: "Form",
 });
 
 
-},{"lodash":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/lodash/index.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
+},{"../../services/auth":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/services/auth.js","lodash":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/lodash/index.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/users/services/auth.js":[function(require,module,exports){
+var request = require('superagent');
+var cookies = require('cookies-js');
+
+var get = function (url, cb) {
+    request.get(url)
+        .set("Content-Type", "application/json")
+        .end(cb);
+};
+
+module.exports = {
+    isLoggedIn: function() {
+        return cookies.get('userId') > 0
+    }
+}; 
+
+
+},{"cookies-js":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/cookies-js/dist/cookies.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -309,6 +333,168 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
+},{}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/cookies-js/dist/cookies.js":[function(require,module,exports){
+/*
+ * Cookies.js - 1.2.1
+ * https://github.com/ScottHamper/Cookies
+ *
+ * This is free and unencumbered software released into the public domain.
+ */
+(function (global, undefined) {
+    'use strict';
+
+    var factory = function (window) {
+        if (typeof window.document !== 'object') {
+            throw new Error('Cookies.js requires a `window` with a `document` object');
+        }
+
+        var Cookies = function (key, value, options) {
+            return arguments.length === 1 ?
+                Cookies.get(key) : Cookies.set(key, value, options);
+        };
+
+        // Allows for setter injection in unit tests
+        Cookies._document = window.document;
+
+        // Used to ensure cookie keys do not collide with
+        // built-in `Object` properties
+        Cookies._cacheKeyPrefix = 'cookey.'; // Hurr hurr, :)
+        
+        Cookies._maxExpireDate = new Date('Fri, 31 Dec 9999 23:59:59 UTC');
+
+        Cookies.defaults = {
+            path: '/',
+            secure: false
+        };
+
+        Cookies.get = function (key) {
+            if (Cookies._cachedDocumentCookie !== Cookies._document.cookie) {
+                Cookies._renewCache();
+            }
+
+            return Cookies._cache[Cookies._cacheKeyPrefix + key];
+        };
+
+        Cookies.set = function (key, value, options) {
+            options = Cookies._getExtendedOptions(options);
+            options.expires = Cookies._getExpiresDate(value === undefined ? -1 : options.expires);
+
+            Cookies._document.cookie = Cookies._generateCookieString(key, value, options);
+
+            return Cookies;
+        };
+
+        Cookies.expire = function (key, options) {
+            return Cookies.set(key, undefined, options);
+        };
+
+        Cookies._getExtendedOptions = function (options) {
+            return {
+                path: options && options.path || Cookies.defaults.path,
+                domain: options && options.domain || Cookies.defaults.domain,
+                expires: options && options.expires || Cookies.defaults.expires,
+                secure: options && options.secure !== undefined ?  options.secure : Cookies.defaults.secure
+            };
+        };
+
+        Cookies._isValidDate = function (date) {
+            return Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date.getTime());
+        };
+
+        Cookies._getExpiresDate = function (expires, now) {
+            now = now || new Date();
+
+            if (typeof expires === 'number') {
+                expires = expires === Infinity ?
+                    Cookies._maxExpireDate : new Date(now.getTime() + expires * 1000);
+            } else if (typeof expires === 'string') {
+                expires = new Date(expires);
+            }
+
+            if (expires && !Cookies._isValidDate(expires)) {
+                throw new Error('`expires` parameter cannot be converted to a valid Date instance');
+            }
+
+            return expires;
+        };
+
+        Cookies._generateCookieString = function (key, value, options) {
+            key = key.replace(/[^#$&+\^`|]/g, encodeURIComponent);
+            key = key.replace(/\(/g, '%28').replace(/\)/g, '%29');
+            value = (value + '').replace(/[^!#$&-+\--:<-\[\]-~]/g, encodeURIComponent);
+            options = options || {};
+
+            var cookieString = key + '=' + value;
+            cookieString += options.path ? ';path=' + options.path : '';
+            cookieString += options.domain ? ';domain=' + options.domain : '';
+            cookieString += options.expires ? ';expires=' + options.expires.toUTCString() : '';
+            cookieString += options.secure ? ';secure' : '';
+
+            return cookieString;
+        };
+
+        Cookies._getCacheFromString = function (documentCookie) {
+            var cookieCache = {};
+            var cookiesArray = documentCookie ? documentCookie.split('; ') : [];
+
+            for (var i = 0; i < cookiesArray.length; i++) {
+                var cookieKvp = Cookies._getKeyValuePairFromCookieString(cookiesArray[i]);
+
+                if (cookieCache[Cookies._cacheKeyPrefix + cookieKvp.key] === undefined) {
+                    cookieCache[Cookies._cacheKeyPrefix + cookieKvp.key] = cookieKvp.value;
+                }
+            }
+
+            return cookieCache;
+        };
+
+        Cookies._getKeyValuePairFromCookieString = function (cookieString) {
+            // "=" is a valid character in a cookie value according to RFC6265, so cannot `split('=')`
+            var separatorIndex = cookieString.indexOf('=');
+
+            // IE omits the "=" when the cookie value is an empty string
+            separatorIndex = separatorIndex < 0 ? cookieString.length : separatorIndex;
+
+            return {
+                key: decodeURIComponent(cookieString.substr(0, separatorIndex)),
+                value: decodeURIComponent(cookieString.substr(separatorIndex + 1))
+            };
+        };
+
+        Cookies._renewCache = function () {
+            Cookies._cache = Cookies._getCacheFromString(Cookies._document.cookie);
+            Cookies._cachedDocumentCookie = Cookies._document.cookie;
+        };
+
+        Cookies._areEnabled = function () {
+            var testKey = 'cookies.js';
+            var areEnabled = Cookies.set(testKey, 1).get(testKey) === '1';
+            Cookies.expire(testKey);
+            return areEnabled;
+        };
+
+        Cookies.enabled = Cookies._areEnabled();
+
+        return Cookies;
+    };
+
+    var cookiesExport = typeof global.document === 'object' ? factory(global) : factory;
+
+    // AMD support
+    if (typeof define === 'function' && define.amd) {
+        define(function () { return cookiesExport; });
+    // CommonJS/Node.js support
+    } else if (typeof exports === 'object') {
+        // Support Node.js specific `module.exports` (which can be a function)
+        if (typeof module === 'object' && typeof module.exports === 'object') {
+            exports = module.exports = cookiesExport;
+        }
+        // But always support CommonJS module 1.1.1 spec (`exports` cannot be a function)
+        exports.Cookies = cookiesExport;
+    } else {
+        global.Cookies = cookiesExport;
+    }
+})(typeof window === 'undefined' ? this : window);
 },{}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/lodash/index.js":[function(require,module,exports){
 (function (global){
 /**
