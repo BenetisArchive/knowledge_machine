@@ -1,27 +1,28 @@
 var React = require('react');
-var Nav = require('react-bootstrap').Nav;
-var NavItem = require('react-bootstrap').NavItem;
-var DropdownButton = require('react-bootstrap').DropdownButton;
-var MenuItem = require('react-bootstrap').MenuItem;
+var ReactBootstrap = require('react-bootstrap')
+    , Nav = ReactBootstrap.Nav
+    , DropdownButton = ReactBootstrap.DropdownButton
+    , MenuItem = ReactBootstrap.DropdownButton
+
+var Router = require('react-router')
+    , RouteHandler = Router.RouteHandler
+    , Route = Router.Route
+    , Navigation = Router.Navigation
+
+var ReactRouterBootstrap = require('react-router-bootstrap')
+    , NavItemLink = ReactRouterBootstrap.NavItemLink
 
 module.exports = React.createClass({
+    mixins: [Navigation],
     handleSelect: function(e) {
-
+        this.transitionTo(e)
     },
     render: function () {
         return (
             <div>
                 <Nav bsStyle="tabs" activeKey={1} onSelect={this.handleSelect}>
-                    <NavItem eventKey={1} href="/home">NavItem 1 content</NavItem>
-                    <NavItem eventKey={2} title="Item">NavItem 2 content</NavItem>
-                    <NavItem eventKey={3} disabled={true}>NavItem 3 content</NavItem>
-                    <DropdownButton eventKey={4} title="Dropdown" navItem={true}>
-                        <MenuItem eventKey="4.1">Action</MenuItem>
-                        <MenuItem eventKey="4.2">Another action</MenuItem>
-                        <MenuItem eventKey="4.3">Something else here</MenuItem>
-                        <MenuItem divider />
-                        <MenuItem eventKey="4.4">Separated link</MenuItem>
-                    </DropdownButton>
+                    <NavItemLink eventKey="students" to="students">Students</NavItemLink>
+                    <NavItemLink eventKey="login" to="login" title="Item">NavItem 2 content</NavItemLink>
                 </Nav>
             </div>
         );

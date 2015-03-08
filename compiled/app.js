@@ -16,6 +16,7 @@ var App = React.createClass({displayName: "App",
     render: function () {
         return (
             React.createElement("div", null, 
+                React.createElement(Header, null), 
                 React.createElement("ol", null, 
                     React.createElement("li", null, React.createElement(Link, {to: "login"}, "Login")), 
                     React.createElement("li", null, React.createElement(Link, {to: "invite-users"}, "Invite users")), 
@@ -67,7 +68,8 @@ var routes = (
     React.createElement(Route, {handler: App}, 
             React.createElement(Route, {handler: SignedIn}, 
                 React.createElement(Route, {name: "invite-users", handler: InviteUsers}), 
-                React.createElement(Route, {name: "logout", handler: LogOut})
+                React.createElement(Route, {name: "logout", handler: LogOut}), 
+                React.createElement(Route, {name: "students", handler: LogOut})
             ), 
             React.createElement(Route, {handler: SignedOut}, 
                 React.createElement(Route, {name: "login", handler: LogIn})

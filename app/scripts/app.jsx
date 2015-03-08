@@ -16,12 +16,13 @@ var App = React.createClass({
     render: function () {
         return (
             <div>
+                <Header />
                 <ol>
                     <li><Link to="login">Login</Link></li>
                     <li><Link to="invite-users">Invite users</Link></li>
                     <li><Link to="logout">Log out</Link></li>
                 </ol>
-                <RouteHandler/>
+                <RouteHandler />
             </div>
         );
     }
@@ -68,6 +69,7 @@ var routes = (
             <Route handler={SignedIn}>
                 <Route name="invite-users" handler={InviteUsers}/>
                 <Route name="logout" handler={LogOut}/>
+                <Route name="students" handler={LogOut}/>
             </Route>
             <Route handler={SignedOut}>
                 <Route name="login" handler={LogIn} />

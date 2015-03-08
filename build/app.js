@@ -17,6 +17,7 @@ var App = React.createClass({displayName: "App",
     render: function () {
         return (
             React.createElement("div", null, 
+                React.createElement(Header, null), 
                 React.createElement("ol", null, 
                     React.createElement("li", null, React.createElement(Link, {to: "login"}, "Login")), 
                     React.createElement("li", null, React.createElement(Link, {to: "invite-users"}, "Invite users")), 
@@ -68,7 +69,8 @@ var routes = (
     React.createElement(Route, {handler: App}, 
             React.createElement(Route, {handler: SignedIn}, 
                 React.createElement(Route, {name: "invite-users", handler: InviteUsers}), 
-                React.createElement(Route, {name: "logout", handler: LogOut})
+                React.createElement(Route, {name: "logout", handler: LogOut}), 
+                React.createElement(Route, {name: "students", handler: LogOut})
             ), 
             React.createElement(Route, {handler: SignedOut}, 
                 React.createElement(Route, {name: "login", handler: LogIn})
@@ -155,29 +157,30 @@ module.exports = {
 
 },{"../services/auth":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/services/auth.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/header/menu.js":[function(require,module,exports){
 var React = require('react');
-var Nav = require('react-bootstrap').Nav;
-var NavItem = require('react-bootstrap').NavItem;
-var DropdownButton = require('react-bootstrap').DropdownButton;
-var MenuItem = require('react-bootstrap').MenuItem;
+var ReactBootstrap = require('react-bootstrap')
+    , Nav = ReactBootstrap.Nav
+    , DropdownButton = ReactBootstrap.DropdownButton
+    , MenuItem = ReactBootstrap.DropdownButton
+
+var Router = require('react-router')
+    , RouteHandler = Router.RouteHandler
+    , Route = Router.Route
+    , Navigation = Router.Navigation
+
+var ReactRouterBootstrap = require('react-router-bootstrap')
+    , NavItemLink = ReactRouterBootstrap.NavItemLink
 
 module.exports = React.createClass({displayName: "exports",
+    mixins: [Navigation],
     handleSelect: function(e) {
-
+        this.transitionTo(e)
     },
     render: function () {
         return (
             React.createElement("div", null, 
                 React.createElement(Nav, {bsStyle: "tabs", activeKey: 1, onSelect: this.handleSelect}, 
-                    React.createElement(NavItem, {eventKey: 1, href: "/home"}, "NavItem 1 content"), 
-                    React.createElement(NavItem, {eventKey: 2, title: "Item"}, "NavItem 2 content"), 
-                    React.createElement(NavItem, {eventKey: 3, disabled: true}, "NavItem 3 content"), 
-                    React.createElement(DropdownButton, {eventKey: 4, title: "Dropdown", navItem: true}, 
-                        React.createElement(MenuItem, {eventKey: "4.1"}, "Action"), 
-                        React.createElement(MenuItem, {eventKey: "4.2"}, "Another action"), 
-                        React.createElement(MenuItem, {eventKey: "4.3"}, "Something else here"), 
-                        React.createElement(MenuItem, {divider: true}), 
-                        React.createElement(MenuItem, {eventKey: "4.4"}, "Separated link")
-                    )
+                    React.createElement(NavItemLink, {eventKey: "students", to: "students"}, "Students"), 
+                    React.createElement(NavItemLink, {eventKey: "login", to: "login", title: "Item"}, "NavItem 2 content")
                 )
             )
         );
@@ -185,7 +188,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/users/inviteUsers.js":[function(require,module,exports){
+},{"react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","react-router-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/users/inviteUsers.js":[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require('react-bootstrap').Input;
@@ -17123,7 +17126,220 @@ function joinClasses(className/*, ... */) {
 
 module.exports = joinClasses;
 
-},{}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/Cancellation.js":[function(require,module,exports){
+},{}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/ButtonLink.js":[function(require,module,exports){
+var React = require('react');
+
+var Button = require('react-bootstrap/lib/Button');
+var $__0=     require('react-router'),Navigation=$__0.Navigation,State=$__0.State;
+var LinkMixin = require('./LinkMixin');
+
+var ButtonLink = React.createClass({displayName: "ButtonLink",
+  mixins: [
+    LinkMixin,
+    Navigation,
+    State
+  ],
+
+  render: function () {
+    var $__0=
+      
+      
+      
+      
+        this.props,to=$__0.to,params=$__0.params,query=$__0.query,active=$__0.active,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{to:1,params:1,query:1,active:1});
+
+    if (this.props.active === undefined) {
+      active = this.isActive(to, params, query);
+    }
+
+    return (
+      React.createElement(Button, React.__spread({},  props, 
+        {href: this.getHref(), 
+        active: active, 
+        onClick: this.handleRouteTo, 
+        ref: "button"}), 
+          this.props.children
+      )
+    );
+  }
+});
+
+module.exports = ButtonLink;
+
+},{"./LinkMixin":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/LinkMixin.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap/lib/Button":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/Button.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/LinkMixin.js":[function(require,module,exports){
+var React = require('react');
+var classSet = require('react/lib/cx');
+var assign = require('react/lib/Object.assign');
+
+function isLeftClickEvent(event) {
+  return event.button === 0;
+}
+
+function isModifiedEvent(event) {
+  return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
+}
+
+module.exports = {
+  propTypes: {
+    activeClassName: React.PropTypes.string.isRequired,
+    to: React.PropTypes.string.isRequired,
+    params: React.PropTypes.object,
+    query: React.PropTypes.object,
+    onClick: React.PropTypes.func
+  },
+
+  getDefaultProps: function () {
+    return {
+      activeClassName: 'active'
+    };
+  },
+
+  /**
+   * Returns the value of the "href" attribute to use on the DOM element.
+   */
+  getHref: function () {
+    return this.makeHref(this.props.to, this.props.params, this.props.query);
+  },
+
+  /**
+   * Returns the value of the "class" attribute to use on the DOM element, which contains
+   * the value of the activeClassName property when this <Link> is active.
+   */
+  getClassName: function () {
+    var classNames = {};
+
+    if (this.props.className) {
+      classNames[this.props.className] = true;
+    }
+
+    if (this.isActive(this.props.to, this.props.params, this.props.query)) {
+      classNames[this.props.activeClassName] = true;
+    }
+
+    return classSet(classNames);
+  },
+
+  handleRouteTo: function (event) {
+    var allowTransition = true;
+    var clickResult;
+
+    if (this.props.onClick) {
+      clickResult = this.props.onClick(event);
+    }
+
+    if (isModifiedEvent(event) || !isLeftClickEvent(event)) {
+      return;
+    }
+
+    if (clickResult === false || event.defaultPrevented === true) {
+      allowTransition = false;
+    }
+
+    event.preventDefault();
+
+    if (allowTransition) {
+      this.transitionTo(this.props.to, this.props.params, this.props.query);
+    }
+  }
+};
+
+},{"react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react/lib/Object.assign":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/lib/Object.assign.js","react/lib/cx":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/lib/cx.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/MenuItemLink.js":[function(require,module,exports){
+var React = require('react');
+var classSet = require('react/lib/cx');
+
+var MenuItem = require('react-bootstrap/lib/MenuItem');
+var $__0=     require('react-router'),Navigation=$__0.Navigation,State=$__0.State;
+var LinkMixin = require('./LinkMixin');
+
+var joinClasses = require('react-bootstrap/lib/utils/joinClasses');
+
+var MenuItemLink = React.createClass({displayName: "MenuItemLink",
+  mixins: [
+    LinkMixin,
+    Navigation,
+    State
+  ],
+
+  render: function() {
+    var $__0=
+      
+      
+      
+      
+      
+                 
+        this.props,to=$__0.to,params=$__0.params,query=$__0.query,active=$__0.active,className=$__0.className,onSelect=$__0.onSelect,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{to:1,params:1,query:1,active:1,className:1,onSelect:1});
+
+    if (this.props.active === undefined) {
+      active = this.isActive(to, params, query);
+    }
+
+    return (
+      React.createElement(MenuItem, React.__spread({},  props, 
+        {href: this.getHref(), 
+        className:  joinClasses(className, classSet({ active: active })), 
+        onClick: this.handleRouteTo, 
+        ref: "menuItem"}), 
+        this.props.children
+      )
+    );
+  }
+});
+
+module.exports = MenuItemLink;
+
+},{"./LinkMixin":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/LinkMixin.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap/lib/MenuItem":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/MenuItem.js","react-bootstrap/lib/utils/joinClasses":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/utils/joinClasses.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","react/lib/cx":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/lib/cx.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/NavItemLink.js":[function(require,module,exports){
+var React = require('react');
+
+var NavItem = require('react-bootstrap/lib/NavItem');
+var $__0=     require('react-router'),Navigation=$__0.Navigation,State=$__0.State;
+var LinkMixin = require('./LinkMixin');
+
+var NavItemLink = React.createClass({displayName: "NavItemLink",
+  mixins: [
+    LinkMixin,
+    Navigation,
+    State
+  ],
+
+  render: function() {
+    var $__0=
+      
+      
+      
+      
+        this.props,to=$__0.to,params=$__0.params,query=$__0.query,active=$__0.active,props=(function(source, exclusion) {var rest = {};var hasOwn = Object.prototype.hasOwnProperty;if (source == null) {throw new TypeError();}for (var key in source) {if (hasOwn.call(source, key) && !hasOwn.call(exclusion, key)) {rest[key] = source[key];}}return rest;})($__0,{to:1,params:1,query:1,active:1});
+
+    if (this.props.active === undefined) {
+      active = this.isActive(to, params, query);
+    }
+
+    return (
+      React.createElement(NavItem, React.__spread({},  props, 
+        {href: this.getHref(), 
+        active: active, 
+        onClick: this.handleRouteTo, 
+        ref: "navItem"}), 
+        this.props.children
+      )
+    );
+  }
+});
+
+module.exports = NavItemLink;
+
+},{"./LinkMixin":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/LinkMixin.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap/lib/NavItem":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/NavItem.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/index.js":[function(require,module,exports){
+var ButtonLink = require('./ButtonLink');
+var MenuItemLink = require('./MenuItemLink');
+var NavItemLink = require('./NavItemLink');
+
+module.exports = {
+  ButtonLink: ButtonLink,
+  MenuItemLink: MenuItemLink,
+  NavItemLink: NavItemLink
+};
+
+},{"./ButtonLink":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/ButtonLink.js","./MenuItemLink":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/MenuItemLink.js","./NavItemLink":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/NavItemLink.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/Cancellation.js":[function(require,module,exports){
 "use strict";
 
 /**
