@@ -1,31 +1,48 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"./compiled/app.js":[function(require,module,exports){
 var React = require('react');
-var Router = require('react-router');
-var request = require('superagent');
-var RouteHandler = Router.RouteHandler;
-var Link = Router.Link;
-var Route = Router.Route;
+var Router = require('react-router')
+    , RouteHandler = Router.RouteHandler
+    , Link = Router.Link
+    , Route = Router.Route
+    , DefaultRoute = Router.DefaultRoute
+
 var auth = require('./main/services/auth');
 var Header = require('./main/components/header/menu');
+var LogIn = require('./main/components/auth/login');
+var Authentication = require('./main/components/authentication')
 
 var App = React.createClass({displayName: "App",
-    getInitialState: function() {
+    getInitialState: function () {
         return {
-            loggedIn : auth.isLoggedIn()
-        }
+            loggedIn: auth.isLoggedIn()
+        };
+    },
+    onLogin: function() {
+      this.setState({
+          loggedIn: auth.isLoggedIn()
+      })
     },
     render: function () {
+        var loginOrDashboard = this.state.loggedIn
+            ? React.createElement(Dashboard, null)
+            : React.createElement(LogIn, {logIn: auth.logIn, onLogin: this.onLogin})
+            return (
+            React.createElement("div", null, 
+                loginOrDashboard, 
+                React.createElement(RouteHandler, {logIn: auth.logIn})
+            )
+        );
+    }
+});
+
+var Dashboard = React.createClass({displayName: "Dashboard",
+    render: function() {
         return (
             React.createElement("div", null, 
                 React.createElement(Header, null), 
-                React.createElement("ol", null, 
-                    React.createElement("li", null, React.createElement(Link, {to: "login"}, "Login")), 
-                    React.createElement("li", null, React.createElement(Link, {to: "invite-users"}, "Invite users")), 
-                    React.createElement("li", null, React.createElement(Link, {to: "logout"}, "Log out"))
-                ), 
-                React.createElement(RouteHandler, null)
+                "Dashboard"
             )
-        );
+        )
     }
 });
 
@@ -33,26 +50,13 @@ var SignedIn = React.createClass({displayName: "SignedIn",
     render: function () {
         return (
             React.createElement("div", null, 
-                React.createElement("h2", null, "Signed In"), 
                 React.createElement(RouteHandler, null)
             )
         );
     }
 });
 
-var SignedOut = React.createClass({displayName: "SignedOut",
-    render: function () {
-        return (
-            React.createElement("div", null, 
-                React.createElement("h2", null, "Signed Out"), 
-                React.createElement(RouteHandler, {logIn: auth.logIn})
-            )
-        );
-    }
-});
-
 var InviteUsers = require('./main/components/users/inviteUsers');
-var LogIn = require('./main/components/auth/login');
 var LogOut = React.createClass({displayName: "LogOut",
    componentDidMount: function() {
         auth.logOut(function(result){
@@ -67,14 +71,12 @@ var LogOut = React.createClass({displayName: "LogOut",
 
 var routes = (
     React.createElement(Route, {handler: App}, 
-            React.createElement(Route, {handler: SignedIn}, 
-                React.createElement(Route, {name: "invite-users", handler: InviteUsers}), 
-                React.createElement(Route, {name: "logout", handler: LogOut}), 
-                React.createElement(Route, {name: "students", handler: LogOut})
-            ), 
-            React.createElement(Route, {handler: SignedOut}, 
-                React.createElement(Route, {name: "login", handler: LogIn})
-            )
+        React.createElement(Route, {name: "logout", handler: LogOut}), 
+        React.createElement(Route, {name: "login", handler: LogIn}), 
+        React.createElement(Route, {handler: SignedIn}, 
+            React.createElement(Route, {name: "invite-users", handler: InviteUsers}), 
+            React.createElement(Route, {name: "students", handler: InviteUsers})
+        )
     )
 );
 
@@ -83,7 +85,7 @@ Router.run(routes, function (Handler) {
 });
 
 
-},{"./main/components/auth/login":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/auth/login.js","./main/components/header/menu":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/header/menu.js","./main/components/users/inviteUsers":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/users/inviteUsers.js","./main/services/auth":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/services/auth.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","superagent":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/superagent/lib/client.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/auth/login.js":[function(require,module,exports){
+},{"./main/components/auth/login":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/auth/login.js","./main/components/authentication":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/authentication.js","./main/components/header/menu":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/header/menu.js","./main/components/users/inviteUsers":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/users/inviteUsers.js","./main/services/auth":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/services/auth.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/auth/login.js":[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require('react-bootstrap').Input;
@@ -116,11 +118,14 @@ module.exports = React.createClass({displayName: "exports",
                 msg: result.msg
             });
             if(result.type === 'success') {
+                if(this.props.onLogin) {
+                    this.props.onLogin();
+                }
                 var nextPath = this.getQuery().nextPath;
                 if (nextPath) {
                     this.transitionTo(nextPath);
                 } else {
-                    this.replaceWith('/');
+                    this.replaceWith('/students');
                 }
             }
         }.bind(this));
@@ -160,18 +165,20 @@ var React = require('react');
 var ReactBootstrap = require('react-bootstrap')
     , Nav = ReactBootstrap.Nav
     , DropdownButton = ReactBootstrap.DropdownButton
-    , MenuItem = ReactBootstrap.DropdownButton
+    , MenuItem = ReactBootstrap.MenuItem
 
 var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
     , Route = Router.Route
     , Navigation = Router.Navigation
 
+var Authentication = require('../authentication')
+
 var ReactRouterBootstrap = require('react-router-bootstrap')
     , NavItemLink = ReactRouterBootstrap.NavItemLink
 
 module.exports = React.createClass({displayName: "exports",
-    mixins: [Navigation],
+    mixins: [Navigation, Authentication],
     handleSelect: function(e) {
         this.transitionTo(e)
     },
@@ -180,7 +187,12 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("div", null, 
                 React.createElement(Nav, {bsStyle: "tabs", activeKey: 1, onSelect: this.handleSelect}, 
                     React.createElement(NavItemLink, {eventKey: "students", to: "students"}, "Students"), 
-                    React.createElement(NavItemLink, {eventKey: "login", to: "login", title: "Item"}, "NavItem 2 content")
+                    React.createElement(NavItemLink, {eventKey: "login", to: "login", title: "Item"}, "NavItem 2 content"), 
+                    React.createElement(DropdownButton, {eventKey: 4, title: "Other", navItem: true}, 
+                        React.createElement(MenuItem, {eventKey: "/students"}, "Action"), 
+                        React.createElement(MenuItem, {divider: true}), 
+                        React.createElement(MenuItem, {eventKey: "/logout"}, "Log out")
+                    )
                 )
             )
         );
@@ -188,7 +200,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","react-router-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/users/inviteUsers.js":[function(require,module,exports){
+},{"../authentication":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/authentication.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","react-router-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/users/inviteUsers.js":[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require('react-bootstrap').Input;

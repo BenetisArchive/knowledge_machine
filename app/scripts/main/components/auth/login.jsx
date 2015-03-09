@@ -30,11 +30,14 @@ module.exports = React.createClass({
                 msg: result.msg
             });
             if(result.type === 'success') {
+                if(this.props.onLogin) {
+                    this.props.onLogin();
+                }
                 var nextPath = this.getQuery().nextPath;
                 if (nextPath) {
                     this.transitionTo(nextPath);
                 } else {
-                    this.replaceWith('/');
+                    this.replaceWith('/students');
                 }
             }
         }.bind(this));
