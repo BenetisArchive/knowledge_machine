@@ -4,6 +4,8 @@ var Router = require('react-router')
     , Link = Router.Link
     , Route = Router.Route
     , DefaultRoute = Router.DefaultRoute
+    , Navigation = Router.Navigation
+    , State = Router.State
 
 var auth = require('./main/services/auth');
 var Header = require('./main/components/header/menu');
@@ -16,7 +18,10 @@ var App = React.createClass({displayName: "App",
             loggedIn: auth.isLoggedIn()
         };
     },
-    onLogin: function() {
+    componentDidMount: function() {
+        auth.onChange = this.onChange;
+    },
+    onChange: function() {
       this.setState({
           loggedIn: auth.isLoggedIn()
       })
@@ -24,7 +29,7 @@ var App = React.createClass({displayName: "App",
     render: function () {
         var loginOrDashboard = this.state.loggedIn
             ? React.createElement(Dashboard, null)
-            : React.createElement(LogIn, {logIn: auth.logIn, onLogin: this.onLogin})
+            : React.createElement(LogIn, {logIn: auth.logIn, onChange: this.onChange})
             return (
             React.createElement("div", null, 
                 loginOrDashboard, 
@@ -45,37 +50,15 @@ var Dashboard = React.createClass({displayName: "Dashboard",
     }
 });
 
-var SignedIn = React.createClass({displayName: "SignedIn",
-    render: function () {
-        return (
-            React.createElement("div", null, 
-                React.createElement(RouteHandler, null)
-            )
-        );
-    }
-});
-
 var InviteUsers = require('./main/components/users/inviteUsers');
-var LogOut = React.createClass({displayName: "LogOut",
-   componentDidMount: function() {
-        auth.logOut(function(result){
-        });
-   },
-    render: function() {
-        return (
-            React.createElement("div", null, "You are logged out")
-        );
-    }
-});
+var LogOut = require('./main/components/auth/logout')
 
 var routes = (
     React.createElement(Route, {handler: App}, 
         React.createElement(Route, {name: "logout", handler: LogOut}), 
         React.createElement(Route, {name: "login", handler: LogIn}), 
-        React.createElement(Route, {handler: SignedIn}, 
-            React.createElement(Route, {name: "invite-users", handler: InviteUsers}), 
-            React.createElement(Route, {name: "students", handler: InviteUsers})
-        )
+        React.createElement(Route, {name: "invite-users", handler: InviteUsers}), 
+        React.createElement(Route, {name: "students", handler: InviteUsers})
     )
 );
 

@@ -5,6 +5,8 @@ var Router = require('react-router')
     , Link = Router.Link
     , Route = Router.Route
     , DefaultRoute = Router.DefaultRoute
+    , Navigation = Router.Navigation
+    , State = Router.State
 
 var auth = require('./main/services/auth');
 var Header = require('./main/components/header/menu');
@@ -17,7 +19,10 @@ var App = React.createClass({displayName: "App",
             loggedIn: auth.isLoggedIn()
         };
     },
-    onLogin: function() {
+    componentDidMount: function() {
+        auth.onChange = this.onChange;
+    },
+    onChange: function() {
       this.setState({
           loggedIn: auth.isLoggedIn()
       })
@@ -25,7 +30,7 @@ var App = React.createClass({displayName: "App",
     render: function () {
         var loginOrDashboard = this.state.loggedIn
             ? React.createElement(Dashboard, null)
-            : React.createElement(LogIn, {logIn: auth.logIn, onLogin: this.onLogin})
+            : React.createElement(LogIn, {logIn: auth.logIn, onChange: this.onChange})
             return (
             React.createElement("div", null, 
                 loginOrDashboard, 
@@ -46,37 +51,15 @@ var Dashboard = React.createClass({displayName: "Dashboard",
     }
 });
 
-var SignedIn = React.createClass({displayName: "SignedIn",
-    render: function () {
-        return (
-            React.createElement("div", null, 
-                React.createElement(RouteHandler, null)
-            )
-        );
-    }
-});
-
 var InviteUsers = require('./main/components/users/inviteUsers');
-var LogOut = React.createClass({displayName: "LogOut",
-   componentDidMount: function() {
-        auth.logOut(function(result){
-        });
-   },
-    render: function() {
-        return (
-            React.createElement("div", null, "You are logged out")
-        );
-    }
-});
+var LogOut = require('./main/components/auth/logout')
 
 var routes = (
     React.createElement(Route, {handler: App}, 
         React.createElement(Route, {name: "logout", handler: LogOut}), 
         React.createElement(Route, {name: "login", handler: LogIn}), 
-        React.createElement(Route, {handler: SignedIn}, 
-            React.createElement(Route, {name: "invite-users", handler: InviteUsers}), 
-            React.createElement(Route, {name: "students", handler: InviteUsers})
-        )
+        React.createElement(Route, {name: "invite-users", handler: InviteUsers}), 
+        React.createElement(Route, {name: "students", handler: InviteUsers})
     )
 );
 
@@ -85,7 +68,7 @@ Router.run(routes, function (Handler) {
 });
 
 
-},{"./main/components/auth/login":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/auth/login.js","./main/components/authentication":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/authentication.js","./main/components/header/menu":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/header/menu.js","./main/components/users/inviteUsers":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/users/inviteUsers.js","./main/services/auth":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/services/auth.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/auth/login.js":[function(require,module,exports){
+},{"./main/components/auth/login":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/auth/login.js","./main/components/auth/logout":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/auth/logout.js","./main/components/authentication":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/authentication.js","./main/components/header/menu":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/header/menu.js","./main/components/users/inviteUsers":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/users/inviteUsers.js","./main/services/auth":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/services/auth.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/auth/login.js":[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require('react-bootstrap').Input;
@@ -118,8 +101,8 @@ module.exports = React.createClass({displayName: "exports",
                 msg: result.msg
             });
             if(result.type === 'success') {
-                if(this.props.onLogin) {
-                    this.props.onLogin();
+                if(this.props.onChange) {
+                    this.props.onChange();
                 }
                 var nextPath = this.getQuery().nextPath;
                 if (nextPath) {
@@ -144,7 +127,32 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/authentication.js":[function(require,module,exports){
+},{"react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/auth/logout.js":[function(require,module,exports){
+var React = require('react');
+var Router = require('react-router')
+    , Navigation = Router.Navigation
+    , State = Router.State
+
+var auth = require('../../services/auth');
+
+module.exports = React.createClass({displayName: "exports",
+    mixins: [ Navigation, State ],
+    componentDidMount: function() {
+        auth.logOut(function(result){
+            this.replaceWith('/')
+            auth.onChange(); //TODO:Why does this work?
+        }.bind(this));
+
+    },
+    render: function() {
+        return (
+            React.createElement("div", null, "You are logged out")
+        );
+    }
+});
+
+
+},{"../../services/auth":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/services/auth.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/authentication.js":[function(require,module,exports){
 var auth = require('../services/auth');
 
 module.exports = {
@@ -309,7 +317,8 @@ module.exports = {
             .end(function(error, res){
                 callback(JSON.parse(res.text));
             });
-    }
+    },
+    onChange: function() {}
 };
 
 

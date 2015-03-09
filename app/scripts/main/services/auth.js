@@ -19,5 +19,6 @@ module.exports = {
             .end(function(error, res){
                 callback(JSON.parse(res.text));
             });
-    }
+    },
+    onChange: function() {}
 };

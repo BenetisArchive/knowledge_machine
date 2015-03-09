@@ -30,8 +30,8 @@ module.exports = React.createClass({
                 msg: result.msg
             });
             if(result.type === 'success') {
-                if(this.props.onLogin) {
-                    this.props.onLogin();
+                if(this.props.onChange) {
+                    this.props.onChange();
                 }
                 var nextPath = this.getQuery().nextPath;
                 if (nextPath) {

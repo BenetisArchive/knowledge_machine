@@ -4,6 +4,8 @@ var Router = require('react-router')
     , Link = Router.Link
     , Route = Router.Route
     , DefaultRoute = Router.DefaultRoute
+    , Navigation = Router.Navigation
+    , State = Router.State
 
 var auth = require('./main/services/auth');
 var Header = require('./main/components/header/menu');
@@ -16,7 +18,10 @@ var App = React.createClass({
             loggedIn: auth.isLoggedIn()
         };
     },
-    onLogin: function() {
+    componentDidMount: function() {
+        auth.onChange = this.onChange;
+    },
+    onChange: function() {
       this.setState({
           loggedIn: auth.isLoggedIn()
       })
@@ -24,7 +29,7 @@ var App = React.createClass({
     render: function () {
         var loginOrDashboard = this.state.loggedIn
             ? <Dashboard />
-            : <LogIn logIn={auth.logIn} onLogin={this.onLogin} />
+            : <LogIn logIn={auth.logIn} onChange={this.onChange} />
             return (
             <div>
                 {loginOrDashboard}
@@ -45,37 +50,15 @@ var Dashboard = React.createClass({
     }
 });
 
-var SignedIn = React.createClass({
-    render: function () {
-        return (
-            <div>
-                <RouteHandler />
-            </div>
-        );
-    }
-});
-
 var InviteUsers = require('./main/components/users/inviteUsers');
-var LogOut = React.createClass({
-   componentDidMount: function() {
-        auth.logOut(function(result){
-        });
-   },
-    render: function() {
-        return (
-            <div>You are logged out</div>
-        );
-    }
-});
+var LogOut = require('./main/components/auth/logout')
 
 var routes = (
     <Route handler={App} >
         <Route name="logout" handler={LogOut}/>
         <Route name="login" handler={LogIn} />
-        <Route handler={SignedIn}>
-            <Route name="invite-users" handler={InviteUsers}/>
-            <Route name="students" handler={InviteUsers}/>
-        </Route>
+        <Route name="invite-users" handler={InviteUsers}/>
+        <Route name="students" handler={InviteUsers}/>
     </Route>
 );
 
