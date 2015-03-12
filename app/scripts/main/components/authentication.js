@@ -5,7 +5,7 @@ module.exports = {
         willTransitionTo: function (transition) {
             var nextPath = transition.path;
             if (!auth.isLoggedIn()) {
-                transition.redirect('/login',{},
+                transition.redirect('/',{},
                     { 'nextPath' : nextPath });
             }
         }

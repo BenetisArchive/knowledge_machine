@@ -54,7 +54,7 @@ var InviteUsers = require('./main/components/users/inviteUsers');
 var LogOut = require('./main/components/auth/logout')
 
 var routes = (
-    React.createElement(Route, {handler: App}, 
+    React.createElement(Route, {handler: App, pa: true}, 
         React.createElement(Route, {name: "logout", handler: LogOut}), 
         React.createElement(Route, {name: "login", handler: LogIn}), 
         React.createElement(Route, {name: "invite-users", handler: InviteUsers}), 

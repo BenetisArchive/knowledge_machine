@@ -54,7 +54,7 @@ var InviteUsers = require('./main/components/users/inviteUsers');
 var LogOut = require('./main/components/auth/logout')
 
 var routes = (
-    <Route handler={App} >
+    <Route handler={App} pa>
         <Route name="logout" handler={LogOut}/>
         <Route name="login" handler={LogIn} />
         <Route name="invite-users" handler={InviteUsers}/>
