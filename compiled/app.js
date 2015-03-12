@@ -8,9 +8,16 @@ var Router = require('react-router')
     , State = Router.State
 
 var auth = require('./main/services/auth');
-var Header = require('./main/components/header/menu');
-var LogIn = require('./main/components/auth/login');
+
 var Authentication = require('./main/components/authentication')
+
+var Header = require('./main/components/header/menu');
+
+var InviteUsers = require('./main/components/users/inviteUsers');
+var Users = require('./main/components/users/users')
+
+var LogIn = require('./main/components/auth/login');
+var LogOut = require('./main/components/auth/logout')
 
 var App = React.createClass({displayName: "App",
     getInitialState: function () {
@@ -50,15 +57,12 @@ var Dashboard = React.createClass({displayName: "Dashboard",
     }
 });
 
-var InviteUsers = require('./main/components/users/inviteUsers');
-var LogOut = require('./main/components/auth/logout')
-
 var routes = (
     React.createElement(Route, {handler: App, pa: true}, 
         React.createElement(Route, {name: "logout", handler: LogOut}), 
         React.createElement(Route, {name: "login", handler: LogIn}), 
         React.createElement(Route, {name: "invite-users", handler: InviteUsers}), 
-        React.createElement(Route, {name: "students", handler: InviteUsers})
+        React.createElement(Route, {name: "students", handler: Users})
     )
 );
 

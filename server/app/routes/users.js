@@ -23,8 +23,10 @@ module.exports = function(app) {
         res.json({type: 'success', msg: 'Logged out'});
     });
 
-    app.get('/tmp', function (req, res) {
-        res.json({type: 'success', msg: 'Logged out'});
+    app.get('/users', function (req, res) {
+        models.User.findAll().then(function(result) {
+                res.json(result)
+        })
     });
 
     //Returns {type: '(error, success)', msg: '' }
