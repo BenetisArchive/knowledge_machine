@@ -86,7 +86,8 @@ module.exports = function (sequelize, DataTypes) {
                     }
                 },
                 getUsersList: function(done) {
-                    return User.findAll({attributes: ['id', 'email', 'registered']}
+                    var STUDENT = 1;
+                    return User.findAll({attributes: ['id', 'email', 'registered'], where: {role: STUDENT}}
                     ).then(function(result) {
                         done(result)
                     })
