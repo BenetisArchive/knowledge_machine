@@ -6,6 +6,7 @@ module.exports = function(app) {
             if(noUserFound()) {
                 res.json({type: 'error', msg: 'Invalid username or password'})
             } else {
+                //TODO: cookies for loggedIn to be in align with session
                 req.session.userId = userId;
                 res.cookie('userId', userId, { maxAge: 900000, httpOnly: false});
                 res.json({type: 'success', msg: 'Logged in'});
