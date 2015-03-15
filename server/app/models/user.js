@@ -84,6 +84,12 @@ module.exports = function (sequelize, DataTypes) {
 
                         return text;
                     }
+                },
+                getUsersList: function(done) {
+                    return User.findAll({attributes: ['id', 'email', 'registered']}
+                    ).then(function(result) {
+                        done(result)
+                    })
                 }
             },
             instanceMethods: {

@@ -301,7 +301,12 @@ module.exports = React.createClass({displayName: "exports",
 
 },{"../../services/users":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/services/users.js","../authentication":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/authentication.js","lodash":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/lodash/index.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/users/users.js":[function(require,module,exports){
 var React = require('react');
+
+var ReactBootstrap = require('react-bootstrap')
+    , Table = ReactBootstrap.Table
+
 var users = require('../../services/users');
+var _ = require('lodash')
 
 module.exports = React.createClass({displayName: "exports",
     getInitialState: function() {
@@ -317,17 +322,61 @@ module.exports = React.createClass({displayName: "exports",
         }.bind(this))
     },
     render: function () {
-        console.log(this.state.users);
         return (
-            React.createElement("div", null, 
-                this.state.users
+            React.createElement(Table, {striped: true, bordered: true, condensed: true, hover: true}, 
+                React.createElement("thead", null, 
+                    React.createElement("tr", null, 
+                        React.createElement("th", null, "email"), 
+                        React.createElement("th", null, "registered")
+                    )
+                ), 
+                React.createElement(UserRows, {users: this.state.users})
             )
         );
     }
 });
 
+var UserRows = React.createClass({displayName: "UserRows",
+    render: function() {
+        var userRows = this.props.users.map(function(user) {
+            return (
+                React.createElement(TR, {key: user.id}, 
+                    React.createElement(TD, null, user.email), 
+                    React.createElement(TD, null, user.registered)
+                )
+            )
+        })
+        return (
+            React.createElement("tbody", null, 
+                userRows
+            )
+        )
+    }
+})
 
-},{"../../services/users":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/services/users.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/services/auth.js":[function(require,module,exports){
+var TR = React.createClass({displayName: "TR",
+    render: function() {
+        return (
+            React.createElement("tr", null, 
+                this.props.children
+            )
+        )
+    }
+})
+
+var TD = React.createClass({displayName: "TD",
+    render: function() {
+        return (
+            React.createElement("td", null, 
+                this.props.children
+            )
+        )
+    }
+})
+
+
+
+},{"../../services/users":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/services/users.js","lodash":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/lodash/index.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/services/auth.js":[function(require,module,exports){
 var request = require('superagent');
 var cookies = require('cookies-js');
 

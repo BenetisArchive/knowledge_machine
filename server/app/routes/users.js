@@ -24,8 +24,8 @@ module.exports = function(app) {
     });
 
     app.get('/users', function (req, res) {
-        models.User.findAll().then(function(result) {
-                res.json(result)
+        models.User.getUsersList(function(result) {
+            res.json(result)
         })
     });
 
