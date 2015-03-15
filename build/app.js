@@ -217,7 +217,10 @@ module.exports = React.createClass({displayName: "exports",
 },{"../authentication":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/authentication.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js","react-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-bootstrap/lib/main.js","react-router":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router/lib/index.js","react-router-bootstrap":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react-router-bootstrap/lib/index.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/tests/tests.js":[function(require,module,exports){
 var React = require('react');
 
+var Authentication = require('../authentication')
+
 module.exports = React.createClass({displayName: "exports",
+    mixins: [ Authentication ],
     render: function () {
         return (
             React.createElement("div", null, 
@@ -230,7 +233,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/users/inviteUsers.js":[function(require,module,exports){
+},{"../authentication":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/authentication.js","react":"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/node_modules/react/react.js"}],"/Users/zygis/Documents/studies/komp_tinklai_ir_it_technologijos/knowledge_machine/compiled/main/components/users/inviteUsers.js":[function(require,module,exports){
 "use strict";
 var React = require('react');
 var Input = require('react-bootstrap').Input;
