@@ -19,6 +19,8 @@ var Users = require('./main/components/users/users')
 var LogIn = require('./main/components/auth/login');
 var LogOut = require('./main/components/auth/logout')
 
+var Tests = require('./main/components/tests/tests')
+
 var App = React.createClass({
     getInitialState: function () {
         return {
@@ -51,7 +53,6 @@ var Dashboard = React.createClass({
         return (
             <div>
                 <Header />
-                Dashboard
             </div>
         )
     }
@@ -63,6 +64,7 @@ var routes = (
         <Route name="login" handler={LogIn} />
         <Route name="invite-users" handler={InviteUsers}/>
         <Route name="students" handler={Users}/>
+        <Route name="tests" handler={Tests}/>
     </Route>
 );
 

@@ -24,9 +24,9 @@ module.exports = React.createClass({
             <div>
                 <Nav bsStyle="tabs" activeKey={1} onSelect={this.handleSelect}>
                     <NavItemLink eventKey="students" to="students">Students</NavItemLink>
-                    <NavItemLink eventKey="login" to="login" title="Item">NavItem 2 content</NavItemLink>
+                    <NavItemLink eventKey="tests" to="tests" title="Tests">Tests</NavItemLink>
                     <DropdownButton eventKey={4} title="Other" navItem={true}>
-                        <MenuItem eventKey="/students">Action</MenuItem>
+                        <MenuItem eventKey="/students">Students</MenuItem>
                         <MenuItem divider />
                         <MenuItem eventKey="/logout">Log out</MenuItem>
                     </DropdownButton>
